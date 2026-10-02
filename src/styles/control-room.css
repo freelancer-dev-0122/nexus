@@ -1,0 +1,700 @@
+/* ==========================================================================
+   THE CONTROL ROOM — SIMULATED LIVE OPS DASHBOARD
+   Normal flow section directly after the pipeline section.
+   Palette: bone #E9E6DF, paper #F7F5F0, ink #0B0F14, signal-orange #FF4A12,
+   Card background #11161D, hairline borders at 14% paper opacity.
+   ========================================================================== */
+
+.control-room-section {
+  position: relative;
+  width: 100vw;
+  background-color: var(--ink);
+  color: var(--paper);
+  padding: 120px 0;
+  box-sizing: border-box;
+  overflow: visible; /* Prevents clipping headline */
+  z-index: 30;
+  transition: color 0.1s ease;
+}
+
+.control-room-section.theme-bone {
+  color: var(--ink);
+}
+
+.control-room-section.theme-bone .cr-headline,
+.control-room-section.theme-bone .cr-headline .split-char {
+  color: var(--ink) !important;
+}
+
+.control-room-section.theme-bone .cr-meta-row,
+.control-room-section.theme-bone .cr-clock-wrap {
+  color: var(--ink) !important;
+}
+
+.control-room-section.theme-ink {
+  color: var(--paper);
+}
+
+.control-room-section.theme-ink .cr-headline,
+.control-room-section.theme-ink .cr-headline .split-char {
+  color: var(--paper) !important;
+}
+
+.control-room-section.theme-ink .cr-meta-row,
+.control-room-section.theme-ink .cr-clock-wrap {
+  color: var(--paper) !important;
+}
+
+.control-room-container {
+  max-width: 1320px;
+  margin: 0 auto;
+  padding: 0 clamp(1.5rem, 4vw, 3rem);
+  box-sizing: border-box;
+  position: relative;
+}
+
+/* Scan line sweep effect across the section */
+.control-room-scanline {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent 0%, var(--signal-orange) 50%, transparent 100%);
+  opacity: 0;
+  pointer-events: none;
+  z-index: 100;
+  box-shadow: 0 0 16px var(--signal-orange);
+}
+
+/* Header Row */
+.control-room-header {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  margin-bottom: 3.5rem;
+}
+
+.cr-meta-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  letter-spacing: 0.12em;
+  opacity: 0.75;
+}
+
+.cr-clock-wrap {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.cr-live-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: var(--signal-orange);
+  animation: cr-pulse-dot 1.8s infinite ease-in-out;
+}
+
+@keyframes cr-pulse-dot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.35; transform: scale(0.8); }
+}
+
+.cr-headline {
+  font-family: var(--font-display);
+  font-size: clamp(3.2rem, 7vw, 6.4rem);
+  line-height: 0.9;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  color: var(--paper);
+  margin: 0;
+}
+
+.cr-headline .split-char {
+  display: inline-block;
+  will-change: transform;
+}
+
+/* Command Bar: Trigger Button & Status Chip */
+.cr-command-bar {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  flex-wrap: wrap;
+  margin-top: 0.5rem;
+}
+
+.cr-trigger-btn {
+  position: relative;
+  background-color: var(--signal-orange);
+  color: var(--paper);
+  border: none;
+  border-radius: var(--radius-pill);
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 0.75rem 1.6rem;
+  cursor: pointer;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(255, 74, 18, 0.35);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s ease;
+}
+
+.cr-trigger-btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.85;
+}
+
+.cr-btn-fill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 0%;
+  background: rgba(11, 15, 20, 0.35);
+  pointer-events: none;
+  transition: width 0.05s linear;
+}
+
+.cr-btn-label {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.cr-status-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  background: rgba(247, 245, 240, 0.06);
+  border: 1px solid rgba(247, 245, 240, 0.14);
+  padding: 0.7rem 1.25rem;
+  border-radius: var(--radius-pill);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--paper);
+  transition: border-color 0.3s ease, background-color 0.3s ease, color 0.3s ease;
+}
+
+.cr-status-chip.is-active-incident {
+  background-color: rgba(255, 74, 18, 0.14);
+  border-color: var(--signal-orange);
+  color: var(--signal-orange);
+}
+
+.cr-chip-indicator {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: var(--paper);
+  transition: background-color 0.3s ease;
+}
+
+.cr-status-chip.is-active-incident .cr-chip-indicator {
+  background-color: var(--signal-orange);
+}
+
+/* ==========================================================================
+   BENTO GRID (12 columns, 16px gap)
+   ========================================================================== */
+.control-room-bento {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 16px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Bento Card Base */
+.bento-card {
+  position: relative;
+  background-color: #11161D;
+  border: 1px solid rgba(247, 245, 240, 0.14);
+  border-radius: 20px;
+  padding: 24px;
+  box-sizing: border-box;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: border-color 0.3s ease;
+}
+
+.bento-card.pulsing-border {
+  border-color: var(--signal-orange) !important;
+  box-shadow: 0 0 24px rgba(255, 74, 18, 0.25);
+}
+
+/* Cursor spotlight highlight on hover */
+.bento-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    400px circle at var(--mouse-x, -200px) var(--mouse-y, -200px),
+    rgba(247, 245, 240, 0.08),
+    transparent 70%
+  );
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 1;
+}
+
+.bento-card:hover::before {
+  opacity: 1;
+}
+
+.card-inner-content {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.bento-title-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  opacity: 0.75;
+  border-bottom: 1px solid rgba(247, 245, 240, 0.1);
+  padding-bottom: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.bento-tag-muted {
+  opacity: 0.6;
+}
+
+/* Column spans */
+.col-span-7 {
+  grid-column: span 7;
+}
+
+.col-span-5 {
+  grid-column: span 5;
+}
+
+.col-span-12 {
+  grid-column: span 12;
+}
+
+/* Card 1: Service Health Map (7 cols) */
+.service-map-card {
+  min-height: 380px;
+}
+
+.health-grid-wrap {
+  width: 100%;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+}
+
+.health-grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  grid-template-rows: repeat(6, 1fr);
+  gap: 8px;
+  width: 100%;
+  height: 220px;
+}
+
+.service-node {
+  border-radius: 4px;
+  background-color: rgba(247, 245, 240, 0.25);
+  transition: background-color 0.35s ease, transform 0.25s ease, box-shadow 0.35s ease;
+  cursor: pointer;
+}
+
+.service-node:hover {
+  transform: scale(1.15);
+  background-color: var(--paper);
+}
+
+.service-node.is-anomaly {
+  background-color: var(--signal-orange) !important;
+  box-shadow: 0 0 12px var(--signal-orange);
+  transform: scale(1.1);
+}
+
+/* Health tooltip */
+.health-tooltip {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: var(--ink);
+  border: 1px solid rgba(247, 245, 240, 0.25);
+  border-radius: 4px;
+  padding: 0.4rem 0.7rem;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.04em;
+  color: var(--paper);
+  pointer-events: none;
+  opacity: 0;
+  transform: translate(-50%, -120%);
+  transition: opacity 0.15s ease;
+  z-index: 10;
+  white-space: nowrap;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
+}
+
+.health-tooltip.is-visible {
+  opacity: 1;
+}
+
+.health-meta-footer {
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+  opacity: 0.65;
+  margin-top: 0.8rem;
+}
+
+/* Card 2: Latency Chart (5 cols) */
+.latency-card {
+  min-height: 380px;
+}
+
+.latency-metric-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 0.8rem;
+}
+
+.p99-readout {
+  font-family: var(--font-display);
+  font-size: 2.8rem;
+  line-height: 0.85;
+  color: var(--paper);
+}
+
+.p99-readout.is-spike {
+  color: var(--signal-orange);
+}
+
+.latency-canvas-wrap {
+  width: 100%;
+  height: 200px;
+  position: relative;
+}
+
+#latency-chart-canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* Card 3: Live Log Feed (5 cols) */
+.logs-card {
+  min-height: 380px;
+}
+
+.logs-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  height: 280px;
+  overflow: hidden;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.03em;
+}
+
+.log-entry {
+  display: grid;
+  grid-template-columns: 82px 64px 1fr;
+  align-items: center;
+  gap: 0.6rem;
+  animation: log-slide-in 0.3s ease-out;
+  will-change: transform, opacity;
+}
+
+@keyframes log-slide-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.log-time {
+  opacity: 0.5;
+  font-size: 0.68rem;
+}
+
+.log-chip {
+  padding: 0.15rem 0.45rem;
+  border-radius: 3px;
+  font-size: 0.62rem;
+  font-weight: 700;
+  text-align: center;
+  letter-spacing: 0.06em;
+}
+
+.log-chip.chip-info {
+  background: rgba(247, 245, 240, 0.12);
+  color: var(--paper);
+}
+
+.log-chip.chip-warn {
+  border: 1px solid var(--signal-orange);
+  color: var(--signal-orange);
+  background: transparent;
+}
+
+.log-chip.chip-error {
+  background: var(--signal-orange);
+  color: var(--paper);
+}
+
+.log-msg {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  opacity: 0.85;
+}
+
+/* Card 4: AI Reasoning Panel (7 cols) */
+.reasoning-card {
+  min-height: 380px;
+}
+
+.terminal-window {
+  background-color: #0A0D12;
+  border: 1px solid rgba(247, 245, 240, 0.1);
+  border-radius: 8px;
+  padding: 1.2rem;
+  box-sizing: border-box;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  line-height: 1.7;
+  color: var(--paper);
+  height: 250px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.terminal-line {
+  margin-bottom: 0.4rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.terminal-prompt {
+  color: var(--signal-orange);
+  font-weight: 700;
+}
+
+.terminal-cursor {
+  display: inline-block;
+  width: 7px;
+  height: 13px;
+  background-color: var(--signal-orange);
+  margin-left: 3px;
+  animation: term-blink 1s infinite;
+}
+
+@keyframes term-blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+.confidence-bar-wrap {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  margin-top: 1rem;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  opacity: 0.75;
+}
+
+.confidence-track {
+  flex-grow: 1;
+  height: 4px;
+  background-color: rgba(247, 245, 240, 0.14);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.confidence-fill {
+  height: 100%;
+  width: 99%;
+  background-color: var(--signal-orange);
+  transition: width 0.4s ease;
+}
+
+/* Card 5: KPI Strip (12 cols, 4 cells) */
+.kpi-strip-card {
+  padding: 20px 24px;
+}
+
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+  width: 100%;
+}
+
+.kpi-cell {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  border-right: 1px solid rgba(247, 245, 240, 0.12);
+  padding-right: 20px;
+}
+
+.kpi-cell:last-child {
+  border-right: none;
+  padding-right: 0;
+}
+
+.kpi-label-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+  opacity: 0.65;
+}
+
+.kpi-number-wrap {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+}
+
+.kpi-value {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 3.2vw, 3rem);
+  line-height: 0.88;
+  color: var(--paper);
+}
+
+.kpi-delta-chip {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  font-weight: 700;
+  padding: 0.15rem 0.45rem;
+  border-radius: 3px;
+  background: rgba(247, 245, 240, 0.08);
+  color: var(--paper);
+}
+
+.kpi-delta-chip.is-alert {
+  background-color: rgba(255, 74, 18, 0.15);
+  color: var(--signal-orange);
+}
+
+.sparkline-svg {
+  width: 100%;
+  height: 28px;
+  margin-top: 0.35rem;
+}
+
+.sparkline-path {
+  fill: none;
+  stroke: var(--paper);
+  stroke-width: 1.5;
+  opacity: 0.55;
+  transition: stroke 0.3s ease;
+}
+
+.sparkline-path.is-alert {
+  stroke: var(--signal-orange);
+  opacity: 0.9;
+}
+
+/* ==========================================================================
+   RESPONSIVE & ACCESSIBILITY RULES
+   ========================================================================== */
+@media (max-width: 900px) {
+  .control-room-bento {
+    grid-template-columns: 1fr;
+  }
+
+  .col-span-7,
+  .col-span-5,
+  .col-span-12 {
+    grid-column: span 1;
+  }
+
+  .health-grid {
+    grid-template-columns: repeat(8, 1fr);
+    grid-template-rows: repeat(6, 1fr);
+  }
+
+  .kpi-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+
+  .kpi-cell {
+    border-right: none;
+    border-bottom: 1px solid rgba(247, 245, 240, 0.1);
+    padding-bottom: 16px;
+  }
+
+  .kpi-cell:nth-child(3),
+  .kpi-cell:nth-child(4) {
+    border-bottom: none;
+  }
+}
+
+@media (max-width: 600px) {
+  .kpi-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .control-room-section {
+    padding: 80px 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .control-room-scanline {
+    display: none !important;
+  }
+
+  .log-entry {
+    animation: none !important;
+  }
+
+  .service-node {
+    transition: none !important;
+  }
+}

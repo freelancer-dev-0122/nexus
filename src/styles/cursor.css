@@ -1,0 +1,113 @@
+/* ==========================================================================
+   CUSTOM CURSOR (Theme-Inverted with mix-blend-mode: difference)
+   - Pointer-events: none on every cursor element
+   - Z-index above content, below modals
+   - White cursor inverts cleanly against light and dark backgrounds
+   - Ring scales down to 0.5 over buttons and links
+   - Label pill displays only over explicit targets ("VIEW", "RUN", "DRAG", "SCROLL")
+   ========================================================================== */
+
+.custom-cursor,
+.cursor-dot,
+.cursor-ring,
+.cursor-label {
+  pointer-events: none !important;
+  user-select: none !important;
+}
+
+.custom-cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 99990;
+  mix-blend-mode: difference;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  will-change: transform, opacity;
+}
+
+.custom-cursor.is-hidden {
+  opacity: 0 !important;
+  transform: scale(0) !important;
+}
+
+.cursor-dot {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 5px;
+  height: 5px;
+  background-color: #ffffff;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: opacity 0.15s ease, transform 0.15s ease;
+}
+
+.cursor-ring {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 32px;
+  height: 32px;
+  border: 1.5px solid #ffffff;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: transparent;
+  transition: width 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+              height 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+              background-color 0.2s ease,
+              border-color 0.2s ease;
+}
+
+.cursor-label {
+  font-family: var(--font-mono);
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: #000000;
+  background-color: #ffffff;
+  padding: 2px 6px;
+  border-radius: 9999px;
+  opacity: 0;
+  transform: scale(0.5);
+  transition: opacity 0.18s ease, transform 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+  white-space: nowrap;
+}
+
+/* Scaled down ring over standard buttons and links */
+.custom-cursor.is-button .cursor-ring {
+  transform: translate(-50%, -50%) scale(0.5);
+  background-color: #ffffff;
+  border-color: #ffffff;
+}
+
+.custom-cursor.is-button .cursor-dot {
+  opacity: 0;
+}
+
+/* Expanded ring with label pill for targets with data-cursor */
+.custom-cursor.has-label .cursor-ring {
+  width: 54px;
+  height: 54px;
+  background-color: rgba(255, 255, 255, 0.15);
+  border-color: #ffffff;
+  transform: translate(-50%, -50%) scale(1);
+}
+
+.custom-cursor.has-label .cursor-label {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.custom-cursor.has-label .cursor-dot {
+  opacity: 0;
+}
+
+@media (hover: none) and (pointer: coarse) {
+  .custom-cursor {
+    display: none !important;
+  }
+}

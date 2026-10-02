@@ -1,0 +1,450 @@
+/* ==========================================================================
+   INCIDENT PINNED SECTION (NOMINAL -> INCIDENT -> RESOLVED)
+   450vh scroll distance, pinned 100svh viewport.
+   Two full-viewport stacked layers: NOMINAL (bone/ink) & INCIDENT (ink/paper).
+   Revealed via clip-path: circle() expanding from the Three.js glass lens.
+   Palette: bone #E9E6DF, paper #F7F5F0, ink #0B0F14, signal-orange #FF4A12.
+   ========================================================================== */
+
+.incident-pinned-section {
+  position: relative;
+  width: 100vw;
+  height: 100svh;
+  max-height: 100svh;
+  margin: 0;
+  padding: 0;
+  background-color: var(--bone);
+  z-index: 10;
+}
+
+.incident-pinned-wrapper {
+  position: relative;
+  width: 100vw;
+  height: 100svh;
+  max-height: 100svh;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+/* Background Stage Word: strictly below all text and cards, 6% opacity, down by 15vh */
+.incident-bg-word-wrap {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: clamp(2rem, 6vw, 6rem);
+  padding-top: 15vh; /* moved down by 15vh so text, heading, card never collide with it */
+  overflow: hidden;
+}
+
+.incident-bg-word {
+  font-family: var(--font-display);
+  font-size: clamp(7rem, 15vw, 16rem);
+  line-height: 0.82;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  color: var(--ink);
+  opacity: 0.06; /* strictly 6% opacity */
+  user-select: none;
+  white-space: nowrap;
+}
+
+.layer-incident .incident-bg-word {
+  color: var(--paper);
+}
+
+/* Two stacked full-viewport layers */
+.pinned-layer {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: clamp(2rem, 5vh, 4rem) clamp(2rem, 5vw, 5rem);
+}
+
+/* NOMINAL Layer (Bone background, Ink text) */
+.layer-nominal {
+  background-color: var(--bone);
+  color: var(--ink);
+  z-index: 1;
+}
+
+/* INCIDENT Layer (Ink background, Paper text) */
+.layer-incident {
+  background-color: var(--ink);
+  color: var(--paper);
+  z-index: 2;
+  /* Circle clip-path expands from lens center */
+  clip-path: circle(0px at 72% 70%);
+  will-change: clip-path;
+}
+
+/* Main Content Split: Left Column Text & Card (Right side is Three.js Lens & 3D Title) */
+.incident-grid {
+  display: grid;
+  grid-template-columns: minmax(340px, 540px) 1fr;
+  width: 100%;
+  height: calc(100% - 90px);
+  position: relative;
+  z-index: 2;
+}
+
+.incident-left-col {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: clamp(1rem, 2.5vh, 2rem);
+  max-width: 500px;
+}
+
+.stage-label-wrap {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.mono-stage-label {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  opacity: 0.7;
+}
+
+.stage-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: var(--signal-orange);
+}
+
+/* Heading: STATUS: <WORD> in Anton 72px+ */
+.incident-heading {
+  font-family: var(--font-display);
+  font-size: clamp(3.2rem, 5.5vw, 5.2rem);
+  line-height: 0.88;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.3em;
+}
+
+/* Orange accent rules:
+   On bone: orange chip behind ink text.
+   On ink: orange text. */
+.layer-nominal .stage-word-chip {
+  background-color: var(--signal-orange);
+  color: var(--ink);
+  padding: 0.05em 0.3em;
+  border-radius: 4px;
+  line-height: 1;
+}
+
+.layer-incident .stage-word-chip {
+  color: var(--signal-orange);
+  background: transparent;
+  padding: 0;
+}
+
+/* Short Two-line Mono Description */
+.incident-desc {
+  font-family: var(--font-mono);
+  font-size: clamp(0.75rem, 0.95vw, 0.84rem);
+  line-height: 1.6;
+  opacity: 0.75;
+  margin: 0;
+}
+
+/* 480px wide card with 18px type */
+.incident-card {
+  width: 480px;
+  max-width: 100%;
+  font-family: var(--font-mono);
+  font-size: 18px; /* 18px type as specified */
+  border-radius: 4px;
+  padding: 1.25rem 1.5rem;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.layer-nominal .incident-card {
+  background-color: var(--paper);
+  border: 1px solid var(--border);
+  box-shadow: 0 8px 30px rgba(11, 15, 20, 0.04);
+  color: var(--ink);
+}
+
+.layer-incident .incident-card {
+  background-color: var(--ink);
+  border: 1px solid rgba(247, 245, 240, 0.14);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+  color: var(--paper);
+}
+
+/* Card Header & Footer Rows */
+.card-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.8rem;
+  letter-spacing: 0.06em;
+}
+
+.card-row-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.75rem;
+  letter-spacing: 0.06em;
+  opacity: 0.8;
+  border-top: 1px solid rgba(11, 15, 20, 0.1);
+  padding-top: 0.65rem;
+}
+
+.layer-incident .card-row-bottom {
+  border-top-color: rgba(247, 245, 240, 0.12);
+}
+
+.card-probe-val, .card-action-val {
+  font-weight: 600;
+}
+
+.layer-incident .card-val-alert {
+  color: var(--signal-orange);
+}
+
+/* Waveform Canvas */
+.waveform-wrap {
+  width: 100%;
+  height: 60px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+}
+
+.waveform-canvas {
+  width: 100%;
+  height: 60px;
+  display: block;
+}
+
+/* Three.js Lens & Background Word Container */
+.incident-three-container {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 4;
+  pointer-events: none;
+}
+
+#incident-three-canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* Bottom Progress Strip */
+.incident-hud {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: flex-end;
+  width: 100%;
+  padding-bottom: 0.8rem;
+  position: relative;
+  z-index: 6;
+}
+
+/* 4 Step Chips Center */
+.step-chips-group {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.step-chip {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 0.35rem 0.85rem;
+  border-radius: var(--radius-pill);
+  transition: all 0.25s ease;
+  white-space: nowrap;
+}
+
+/* In NOMINAL Layer */
+.layer-nominal .step-chip {
+  border: 1px solid var(--border);
+  color: var(--ink);
+  opacity: 0.45;
+}
+
+.layer-nominal .step-chip.active {
+  background-color: var(--ink);
+  color: var(--paper);
+  border-color: var(--ink);
+  opacity: 1;
+}
+
+/* In INCIDENT Layer */
+.layer-incident .step-chip {
+  border: 1px solid rgba(247, 245, 240, 0.18);
+  color: var(--paper);
+  opacity: 0.45;
+}
+
+.layer-incident .step-chip.active {
+  background-color: var(--signal-orange);
+  color: var(--paper);
+  border-color: var(--signal-orange);
+  opacity: 1;
+}
+
+/* Bottom-Right: Scroll Percent in Giant Anton with responsive padding, z-index above lens, never cropped */
+.hud-progress-right {
+  position: absolute;
+  right: clamp(20px, 4vw, 48px);
+  bottom: clamp(20px, 4.5vh, 48px);
+  z-index: 35; /* strictly above the lens (canvas is z-index 4) */
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  text-align: right;
+  overflow: visible;
+  white-space: nowrap;
+  pointer-events: none;
+  color: var(--ink);
+  transition: color 0.15s ease;
+}
+
+.hud-progress-right.is-incident-theme {
+  color: var(--paper);
+}
+
+.hud-percent-val {
+  font-family: var(--font-display);
+  font-size: clamp(2.4rem, 4vw, 3.8rem);
+  line-height: 0.85;
+  letter-spacing: -0.02em;
+}
+
+.hud-stage-labels-stack {
+  position: relative;
+  height: 1.2em;
+  margin-top: 0.25rem;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.hud-stage-label {
+  position: absolute;
+  right: 0;
+  top: 0;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.1em;
+  opacity: 0;
+  visibility: hidden;
+  white-space: nowrap;
+}
+
+.hud-stage-label[data-stage="NOMINAL"] {
+  opacity: 1;
+  visibility: visible;
+}
+
+.hud-spacer {
+  min-width: 120px;
+}
+
+/* Thin 1px Progress Line Across Bottom */
+.incident-progress-line-track {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background-color: rgba(11, 15, 20, 0.12);
+  z-index: 10;
+}
+
+.layer-incident .incident-progress-line-track {
+  background-color: rgba(247, 245, 240, 0.12);
+}
+
+.incident-progress-line-fill {
+  height: 100%;
+  width: 0%;
+  background-color: var(--ink);
+  transition: width 0.05s linear;
+}
+
+.layer-incident .incident-progress-line-fill {
+  background-color: var(--signal-orange);
+}
+
+/* ==========================================================================
+   RESPONSIVE & ACCESSIBILITY RULES
+   ========================================================================== */
+@media (max-width: 900px) {
+  .incident-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .incident-left-col {
+    max-width: 100%;
+  }
+
+  .incident-card {
+    width: 100%;
+    font-size: 16px;
+  }
+
+  .incident-hud {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    align-items: center;
+  }
+
+  .step-chips-group {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .hud-progress-right {
+    justify-self: center;
+    text-align: center;
+  }
+}
+
+/* prefers-reduced-motion: no scrub, static stacked states */
+@media (prefers-reduced-motion: reduce) {
+  .incident-pinned-section {
+    height: auto;
+  }
+
+  .incident-pinned-wrapper {
+    position: relative;
+    height: auto;
+  }
+
+  .layer-incident {
+    position: relative;
+    clip-path: none !important;
+  }
+}

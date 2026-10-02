@@ -1,0 +1,335 @@
+/* ==========================================================================
+   PHASE 2 — NOMINAL -> INCIDENT PINNED SCROLL (~400vh)
+   - Expanding clip-path circle from center of the 3D core (72% 50%)
+   - Instant text color flip as the circle edge passes. NO intermediate gray state.
+   - Core visible, fixed on the right half, scaled to ~70% viewport height.
+   - Text & readout on the left half. Right half never empty.
+   - Readability: ink text with lime chip on NOMINAL (no lime text on cream),
+     status card 1.4x larger with 16px type.
+   ========================================================================== */
+
+:root {
+  --incident-radius: 0%;
+}
+
+.incident-pinned-section {
+  position: relative;
+  width: 100vw;
+  height: 400vh; /* Scrolled over ~400vh for scrub control */
+  background-color: transparent;
+  z-index: 10;
+}
+
+.incident-pinned-wrapper {
+  position: sticky;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100svh;
+  max-height: 100svh;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+/* ==========================================================================
+   DUAL LAYER ARCHITECTURE: NOMINAL BASE + INCIDENT OVERLAY
+   ========================================================================== */
+.pinned-layer {
+  position: absolute;
+  inset: 0;
+  width: 100vw;
+  height: 100svh;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: clamp(1.5rem, 3.5vw, 3rem);
+  overflow: hidden;
+}
+
+/* Base Layer: NOMINAL (Cream #EDEAE4, Ink #0B0F14) */
+.pinned-layer-nominal {
+  background-color: #EDEAE4;
+  color: #0B0F14;
+  z-index: 1;
+}
+
+/* Overlay Layer: INCIDENT (Dark Navy #0B0F14, Text #EDEAE4)
+   Expands from core center (72% 50%) via clip-path circle */
+.pinned-layer-incident {
+  background-color: #0B0F14;
+  color: #EDEAE4;
+  z-index: 2;
+  clip-path: circle(var(--incident-radius, 0%) at 72% 50%);
+  -webkit-clip-path: circle(var(--incident-radius, 0%) at 72% 50%);
+  will-change: clip-path;
+}
+
+/* Edge Vignette inside dark layer */
+.incident-vignette {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(circle at center, transparent 35%, rgba(11, 15, 20, 0.92) 100%);
+  z-index: 3;
+}
+
+/* Flashlight Overlay inside dark layer */
+.flashlight-reveal {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2;
+  opacity: 0;
+  background: radial-gradient(
+    circle 240px at var(--cursor-x, 50vw) var(--cursor-y, 50vh),
+    rgba(255, 90, 31, 0.15) 0%,
+    rgba(255, 90, 31, 0.04) 60%,
+    transparent 85%
+  );
+  transition: opacity 0.2s ease;
+}
+
+/* Grid lines revealed by flashlight in dark layer */
+.incident-grid-revealed {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0;
+  background-image: 
+    linear-gradient(rgba(255, 90, 31, 0.22) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 90, 31, 0.22) 1px, transparent 1px);
+  background-size: 40px 40px;
+  background-position: center center;
+  mask-image: radial-gradient(circle 260px at var(--cursor-x, 50vw) var(--cursor-y, 50vh), black 30%, transparent 85%);
+  -webkit-mask-image: radial-gradient(circle 260px at var(--cursor-x, 50vw) var(--cursor-y, 50vh), black 30%, transparent 85%);
+  transition: opacity 0.2s ease;
+}
+
+/* ==========================================================================
+   LEFT COLUMN CONTENT: TEXT, READOUT & STATUS CARD
+   Right half reserved for the 70svh 3D Core
+   ========================================================================== */
+.incident-left-content {
+  position: relative;
+  z-index: 5;
+  width: 52%;
+  max-width: 660px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.incident-kicker {
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  margin-bottom: 0.4rem;
+}
+
+.pinned-layer-nominal .incident-kicker {
+  color: rgba(11, 15, 20, 0.65);
+}
+
+.pinned-layer-incident .incident-kicker {
+  color: #FF5A1F;
+}
+
+.incident-status-tag {
+  font-size: clamp(2.2rem, 4.8vw, 4.4rem);
+  line-height: 0.95;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  margin-bottom: 0.85rem;
+}
+
+/* 6. READABILITY: Ink text with lime highlight chip on NOMINAL */
+.nominal-lime-chip {
+  background-color: #C8FF3D;
+  color: #0B0F14;
+  font-weight: 800;
+  padding: 0.12em 0.45em;
+  border-radius: 2px;
+  display: inline-block;
+  letter-spacing: 0.02em;
+}
+
+.incident-alert-text {
+  color: #FF5A1F;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+}
+
+.text-amber {
+  color: #FF5A1F !important;
+}
+
+.text-lime {
+  color: #C8FF3D !important;
+}
+
+/* Short Editorial Copy Lines */
+.incident-copy-wrapper {
+  min-height: 3.4em;
+  margin-bottom: 1.25rem;
+}
+
+.incident-editorial-copy {
+  font-size: 16px;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.nominal-copy {
+  color: rgba(11, 15, 20, 0.75);
+}
+
+.incident-copy {
+  color: rgba(237, 234, 228, 0.85);
+}
+
+/* ==========================================================================
+   6. STATUS CARD: 1.4x LARGER WITH 16PX TYPE
+   ========================================================================== */
+.incident-status-card {
+  width: 100%;
+  padding: 1.4rem 1.6rem;
+  box-sizing: border-box;
+  font-size: 16px; /* 16px type */
+  line-height: 1.5;
+  margin-bottom: 1rem;
+}
+
+.nominal-card {
+  background: #FFFFFF;
+  color: #0B0F14;
+  border: 1px solid rgba(11, 15, 20, 0.18);
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.05);
+}
+
+.incident-card {
+  background: #141920;
+  color: #EDEAE4;
+  border: 1px solid rgba(255, 90, 31, 0.35);
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.4);
+}
+
+.card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  padding-bottom: 0.5rem;
+  margin-bottom: 0.5rem;
+  border-bottom: 1px solid currentColor;
+  opacity: 0.85;
+}
+
+.card-waveform-wrap {
+  width: 100%;
+  height: 90px; /* 1.4x larger height */
+  position: relative;
+  margin: 0.4rem 0;
+}
+
+#nominal-waveform-canvas, #incident-waveform-canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.card-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 14px;
+  letter-spacing: 0.06em;
+  padding-top: 0.5rem;
+  margin-top: 0.5rem;
+  border-top: 1px solid currentColor;
+  opacity: 0.75;
+}
+
+/* ==========================================================================
+   BOTTOM READOUT & PROGRESS ROW (LEFT ALIGNED)
+   ========================================================================== */
+.incident-bottom-hud {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  border-top: 1px solid currentColor;
+  padding-top: 1rem;
+  opacity: 0.9;
+}
+
+.nominal-hud {
+  color: #0B0F14;
+  border-color: rgba(11, 15, 20, 0.18);
+}
+
+.incident-hud {
+  color: #EDEAE4;
+  border-color: rgba(237, 234, 228, 0.18);
+}
+
+.hud-phase-label {
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+  opacity: 0.65;
+  margin-bottom: 0.2rem;
+}
+
+.hud-threshold-val {
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+}
+
+.hud-progress-readout {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.hud-pct-number {
+  font-size: clamp(2.4rem, 4.5vw, 3.8rem);
+  line-height: 0.85;
+  letter-spacing: -0.02em;
+}
+
+.hud-pct-status {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  margin-top: 0.25rem;
+  text-transform: uppercase;
+}
+
+/* ==========================================================================
+   5. CORE POSITION DURING PINNED SECTION:
+   Right half of screen (left: 72%), scaled to ~70% viewport height.
+   ========================================================================== */
+.hero-three-wrapper.is-pinned-incident {
+  position: fixed !important;
+  top: 50% !important;
+  left: 72% !important;
+  transform: translate(-50%, -50%) !important;
+  width: 70svh !important;
+  height: 70svh !important;
+  z-index: 100 !important;
+}
+
+@media (max-width: 900px) {
+  .incident-left-content {
+    width: 100%;
+    max-width: none;
+  }
+  .hero-three-wrapper.is-pinned-incident {
+    opacity: 0.25;
+    pointer-events: none;
+    left: 50% !important;
+  }
+}

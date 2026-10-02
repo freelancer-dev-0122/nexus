@@ -1,0 +1,90 @@
+/* ==========================================================================
+   SECTION B: BIG MARQUEE (INK BACKGROUND, 2 STACKED ROWS)
+   Row 1 scrolls left (filled paper Anton words)
+   Row 2 scrolls right (1px outlined words)
+   Speed follows scroll velocity, rows skew up to 6deg when scrolling fast.
+   ========================================================================== */
+
+.big-marquee-section {
+  position: relative;
+  width: 100vw;
+  background-color: var(--ink);
+  color: var(--paper);
+  padding: 60px 0;
+  box-sizing: border-box;
+  overflow: hidden;
+  z-index: 20;
+}
+
+.big-marquee-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  width: 100%;
+  overflow: hidden;
+}
+
+.big-marquee-row {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+  user-select: none;
+  display: flex;
+}
+
+.big-marquee-track {
+  display: inline-flex;
+  align-items: center;
+  white-space: nowrap;
+  will-change: transform;
+}
+
+.big-marquee-item {
+  display: inline-flex;
+  align-items: center;
+  gap: clamp(1.2rem, 3vw, 2.8rem);
+  padding-right: clamp(1.2rem, 3vw, 2.8rem);
+  font-family: var(--font-display);
+  font-size: clamp(4.5rem, 9.5vw, 10rem);
+  line-height: 0.88;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  will-change: transform;
+}
+
+/* Row 1: Filled paper Anton words */
+.big-marquee-row-1 .big-marquee-item {
+  color: var(--paper);
+}
+
+/* Row 2: 1px outlined words */
+.big-marquee-row-2 .big-marquee-item {
+  color: transparent;
+  -webkit-text-stroke: 1.5px var(--paper);
+}
+
+/* Signal Orange bullets */
+.marquee-bullet {
+  color: var(--signal-orange);
+  -webkit-text-stroke: 0px !important;
+  font-size: 0.7em;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+@media (max-width: 768px) {
+  .big-marquee-section {
+    padding: 40px 0;
+  }
+  
+  .big-marquee-wrapper {
+    gap: 1rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .big-marquee-item {
+    transform: none !important;
+  }
+}

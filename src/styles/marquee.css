@@ -1,0 +1,46 @@
+/* ==========================================================================
+   SCROLL-LINKED MARQUEE STRIP
+   120px ink strip with DETECT • REASON • ACT • LEARN scrolling horizontally.
+   Direction and speed follow scroll velocity, skews slightly while moving fast.
+   ========================================================================== */
+
+.scroll-marquee-strip {
+  width: 100vw;
+  height: 120px;
+  background-color: var(--ink);
+  color: var(--paper);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  position: relative;
+  z-index: 8;
+  border-top: 1px solid rgba(247, 245, 240, 0.12);
+  border-bottom: 1px solid rgba(247, 245, 240, 0.12);
+  box-sizing: border-box;
+}
+
+.marquee-inner-track {
+  display: flex;
+  white-space: nowrap;
+  width: max-content;
+  will-change: transform;
+}
+
+.marquee-item {
+  font-family: var(--font-display);
+  font-size: clamp(2.4rem, 4.2vw, 3.8rem);
+  line-height: 1;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--paper);
+  padding: 0 1.5rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 1.5rem;
+  will-change: transform;
+}
+
+.marquee-bullet {
+  color: var(--signal-orange);
+  font-size: 0.8em;
+}

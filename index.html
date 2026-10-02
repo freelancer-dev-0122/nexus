@@ -1,0 +1,1229 @@
+<!DOCTYPE html>
+<html lang="en" class="is-loading">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NEXUS — Autonomous Operations Command Center</title>
+  <meta name="description" content="NEXUS Autonomous Operations Command Center. Sub-millisecond latency baseline, zero-touch failover, and continuous invariant verification across multi-cloud distributed fabrics." />
+  
+  <!-- Open Graph & Twitter Meta -->
+  <meta property="og:title" content="NEXUS — Autonomous Operations Command Center" />
+  <meta property="og:description" content="Sub-millisecond latency baseline, zero-touch failover, and continuous invariant verification across multi-cloud distributed fabrics." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://nexus.ai" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="NEXUS — Autonomous Operations Command Center" />
+  <meta name="twitter:description" content="Sub-millisecond latency baseline, zero-touch failover, and continuous invariant verification." />
+
+  <!-- Favicon: Signal-Orange dot on Ink background -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230B0F14'/%3E%3Ccircle cx='16' cy='16' r='6' fill='%23FF4A12'/%3E%3C/svg%3E" />
+
+  <!-- Fonts: Anton (giant title), Inter Tight (body), Geist Mono (data & labels) with font-display: swap -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Anton&family=Geist+Mono:wght@300;400;500;600;700&family=Inter+Tight:ital,wght@0,300..700;1,300..700&display=swap" as="style" />
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Geist+Mono:wght@300;400;500;600;700&family=Inter+Tight:ital,wght@0,300..700;1,300..700&display=swap" rel="stylesheet" />
+
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="/src/styles/main.css" />
+</head>
+<body class="is-loading">
+  <!-- Accessibility: Skip to Content Landmark -->
+  <a href="#main-content" class="skip-to-content font-mono">Skip to main content</a>
+
+  <!-- Film Grain Overlay: SVG noise, 5% opacity -->
+  <div class="film-grain" aria-hidden="true"></div>
+
+  <!-- Custom Cursor: Dot + Lagging Ring ("VIEW" on buttons, hidden on touch) -->
+  <div id="custom-cursor" class="custom-cursor" aria-hidden="true">
+    <div class="cursor-dot"></div>
+    <div class="cursor-ring">
+      <span class="cursor-label"></span>
+    </div>
+  </div>
+
+  <!-- Mobile Full-Screen Ink Overlay Menu -->
+  <div id="mobile-nav-overlay" class="mobile-nav-overlay" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Mobile Navigation">
+    <div class="mobile-overlay-header">
+      <div class="nav-logo">
+        <span class="nav-logo-dot"></span>
+        <span class="logo-text">NEXUS</span>
+      </div>
+      <button id="mobile-nav-close" class="mobile-nav-close font-mono" aria-label="Close menu">
+        <span>[ ✕ CLOSE ]</span>
+      </button>
+    </div>
+
+    <nav class="mobile-nav-links font-display" aria-label="Mobile Menu Links">
+      <a href="#pipeline-section" class="mobile-nav-link" data-index="01">
+        <span class="link-num font-mono">01</span>
+        <span class="link-text">PIPELINE</span>
+      </a>
+      <a href="#incident-pinned-section" class="mobile-nav-link" data-index="02">
+        <span class="link-num font-mono">02</span>
+        <span class="link-text">SIMULATION</span>
+      </a>
+      <a href="#control-room-section" class="mobile-nav-link" data-index="03">
+        <span class="link-num font-mono">03</span>
+        <span class="link-text">CONTROL ROOM</span>
+      </a>
+      <a href="#capabilities-section" class="mobile-nav-link" data-index="04">
+        <span class="link-num font-mono">04</span>
+        <span class="link-text">CAPABILITIES</span>
+      </a>
+      <a href="#site-footer" class="mobile-nav-link" data-index="05">
+        <span class="link-num font-mono">05</span>
+        <span class="link-text">CONTACT</span>
+      </a>
+    </nav>
+
+    <div class="mobile-overlay-footer font-mono">
+      <div class="status-pill">
+        <span class="status-dot-pulse"></span>
+        <span>SYSTEM: NOMINAL</span>
+      </div>
+      <span style="opacity: 0.5;">AUTONOMOUS FABRIC</span>
+    </div>
+  </div>
+
+  <!-- LOADER: position fixed, inset 0, 100svh, z-index above everything -->
+  <div id="app-loader" class="app-loader" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+    <div class="loader-top">
+      <div class="loader-sys-tag">NEXUS // SYS_INIT</div>
+      <div class="font-mono" style="opacity: 0.65; font-size: 0.72rem;">CORE_BUILD: 4.18.0-RELEASE</div>
+    </div>
+    <div class="loader-bottom">
+      <div class="loader-pct-wrap">
+        <span id="loader-percent">0</span><span class="loader-pct-symbol">%</span>
+      </div>
+      <div id="loader-status-note" class="loader-status-note">
+        INITIALIZING KERNEL MODULES...
+      </div>
+    </div>
+    <!-- Thin Ink Progress Line at the Bottom -->
+    <div class="loader-progress-track">
+      <div class="loader-progress-fill" id="loader-fill"></div>
+    </div>
+  </div>
+
+  <!-- VIEWPORT ROOT: 100svh single viewport, no scrolling in hero state -->
+  <div class="viewport-root">
+    
+    <!-- FLOATING PILL NAVIGATION -->
+    <header class="site-header" role="banner">
+      <div class="nav-container">
+        <!-- Floating Pill Nav Top-Left -->
+        <nav class="nav-pill-main" aria-label="Main Navigation">
+          <a href="#" class="nav-logo" data-cursor="NEXUS">
+            <span class="nav-logo-dot"></span>
+            <span class="logo-text">NEXUS</span>
+          </a>
+          <div class="nav-links">
+            <a href="#pipeline-section" class="nav-link" data-cursor="VIEW">Pipeline</a>
+            <a href="#incident-pinned-section" class="nav-link" data-cursor="VIEW">Simulation</a>
+            <a href="#control-room-section" class="nav-link" data-cursor="VIEW">Dashboard</a>
+          </div>
+          <!-- Mobile Menu Trigger Pill -->
+          <button class="nav-menu-toggle font-mono" id="nav-menu-toggle" aria-label="Open navigation menu" aria-expanded="false">
+            <span>MENU</span>
+          </button>
+        </nav>
+
+        <!-- Top-Right: Status Pill + Black Pill CTA -->
+        <div class="nav-group-right">
+          <div class="status-pill font-mono" id="status-pill">
+            <span class="status-dot-pulse"></span>
+            <span class="status-text">SYSTEM: NOMINAL</span>
+          </div>
+          <button class="pill-cta magnetic-btn" id="cta-access" data-cursor="ACCESS" aria-label="Request Access">
+            <span>Request access</span>
+            <span class="btn-arrow" aria-hidden="true">↗</span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- MAIN CONTENT LANDMARK -->
+    <main id="main-content">
+      <!-- HERO STAGE (height: calc(100svh - 190px), bone background) -->
+      <section class="hero-stage" aria-label="Hero Showcase" data-cursor="SCROLL">
+        
+        <!-- Three.js Scene: CanvasTexture Title + Refractive Glass Lens & Inner Orange Ring -->
+        <div class="three-scene-container">
+          <canvas id="three-hero-canvas"></canvas>
+        </div>
+
+        <!-- HTML Fallback Title & Glass Ring if WebGL fails -->
+        <h1 class="hero-fallback-title font-anton">NEXUS</h1>
+        <div class="hero-fallback-glass-ring" id="hero-fallback-ring" aria-hidden="true"></div>
+
+      <!-- Mono Labels Layer: Keep 32px+ clear space from the title -->
+      <div class="hero-labels-overlay">
+        <!-- Top Labels Row -->
+        <div class="labels-row-top">
+          <span class="mono-label-left">[ AUTONOMOUS OPERATIONS CORE V4.18 ]</span>
+          <span class="mono-label-right">LATENCY 0.42MS // ZERO-TOUCH FAILOVER</span>
+        </div>
+
+        <!-- Bottom Labels Row -->
+        <div class="labels-row-bottom">
+          <p class="descriptor-text font-mono">
+            Continuous invariant verification &amp; causal blast-radius synthesis across multi-cloud distributed fabrics. Self-healing microservices without human intervention.
+          </p>
+          <div class="scroll-prompt font-mono">
+            ↓ SCROLL TO INITIATE SEQUENCE
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- BOTTOM BAR: Exactly 190px, always fully visible, hard split -->
+    <footer class="hero-bottom-bar" role="contentinfo">
+      
+      <!-- LEFT PANEL (Paper #F7F5F0): Architecture Blueprint SVG with sequential lines & orange dot -->
+      <div class="panel-blueprint">
+        <div class="panel-header-mono">
+          <span>ARCHITECTURE // BLUEPRINT</span>
+          <span style="opacity: 0.6;">LIVE TOPOLOGY</span>
+        </div>
+
+        <div class="blueprint-wrap">
+          <svg class="blueprint-svg" viewBox="0 0 740 110" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
+            <!-- Sequential Stroke-dashoffset Lines -->
+            <path class="bp-line seq-1" d="M 35 55 H 105" stroke="currentColor" stroke-width="1.2" />
+            <path class="bp-line seq-2" d="M 141 55 H 172" stroke="currentColor" stroke-width="1.2" />
+            <path class="bp-line seq-3" d="M 208 55 C 224 55 236 36 255 36" stroke="currentColor" stroke-width="1.2" />
+            <path class="bp-line seq-3" d="M 208 55 C 224 55 232 74 248 74" stroke="currentColor" stroke-width="1.2" stroke-dasharray="3 2" />
+            <path class="bp-line seq-4" d="M 275 36 C 295 36 306 55 326 55" stroke="currentColor" stroke-width="1.2" />
+            <path class="bp-line seq-4" d="M 278 74 C 298 74 308 55 326 55" stroke="currentColor" stroke-width="1.2" stroke-dasharray="3 2" />
+            <path class="bp-line seq-5" d="M 364 55 H 421" stroke="currentColor" stroke-width="1.2" />
+            <path class="bp-line seq-6" d="M 449 55 H 510" stroke="currentColor" stroke-width="1.2" />
+            <path class="bp-line seq-7" d="M 546 55 H 638" stroke="currentColor" stroke-width="1.2" />
+
+            <!-- Node 1: Circle (Ingress) -->
+            <g class="bp-pulse">
+              <circle cx="35" cy="55" r="9" stroke="currentColor" stroke-width="1.3" />
+              <circle cx="35" cy="55" r="3" fill="currentColor" />
+              <text x="35" y="76" text-anchor="middle" font-size="6.5" font-family="monospace" fill="currentColor">INGRESS</text>
+            </g>
+
+            <!-- Node 2: Square (Filter) -->
+            <g class="bp-pulse">
+              <rect x="105" y="37" width="36" height="36" stroke="currentColor" stroke-width="1.3" />
+              <line x1="111" y1="48" x2="135" y2="48" stroke="currentColor" stroke-width="1" stroke-dasharray="2 2" />
+              <line x1="111" y1="55" x2="135" y2="55" stroke="currentColor" stroke-width="1" />
+              <line x1="111" y1="62" x2="135" y2="62" stroke="currentColor" stroke-width="1" stroke-dasharray="2 2" />
+              <text x="123" y="84" text-anchor="middle" font-size="6.5" font-family="monospace" fill="currentColor">FILTER</text>
+            </g>
+
+            <!-- Node 3: Diamond (Sensor) -->
+            <g class="bp-pulse">
+              <polygon points="190,37 208,55 190,73 172,55" stroke="currentColor" stroke-width="1.3" />
+              <circle cx="190" cy="55" r="2.5" fill="currentColor" />
+              <text x="190" y="86" text-anchor="middle" font-size="6.5" font-family="monospace" fill="currentColor">DRIFT</text>
+            </g>
+
+            <!-- Node 4: Circle (Consensus) -->
+            <g class="bp-pulse">
+              <circle cx="265" cy="36" r="10" stroke="currentColor" stroke-width="1.2" />
+              <circle cx="265" cy="36" r="4" stroke="currentColor" stroke-width="1" stroke-dasharray="2 2" />
+              <text x="265" y="21" text-anchor="middle" font-size="6" font-family="monospace" fill="currentColor">RAFT_01</text>
+            </g>
+
+            <!-- Node 5: Square (Buffer) -->
+            <g class="bp-pulse">
+              <rect x="248" y="63" width="22" height="22" stroke="currentColor" stroke-width="1.2" />
+              <text x="259" y="77" text-anchor="middle" font-size="6" font-family="monospace" fill="currentColor">Q2</text>
+            </g>
+
+            <!-- Node 6: Diamond (Causal Inference) -->
+            <g class="bp-pulse">
+              <polygon points="345,35 367,55 345,75 323,55" stroke="currentColor" stroke-width="1.5" />
+              <circle cx="345" cy="55" r="3" fill="currentColor" />
+              <text x="345" y="88" text-anchor="middle" font-size="6.5" font-family="monospace" fill="currentColor">CAUSAL</text>
+            </g>
+
+            <!-- Node 7: Circle with Check (Gate) -->
+            <g class="bp-pulse">
+              <circle cx="435" cy="55" r="13" stroke="currentColor" stroke-width="1.3" />
+              <path d="M428 55 L433 60 L442 49" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+              <text x="435" y="80" text-anchor="middle" font-size="6.5" font-family="monospace" fill="currentColor">VERIFIED</text>
+            </g>
+
+            <!-- Node 8: Square (Pod Shard) -->
+            <g class="bp-pulse">
+              <rect x="510" y="37" width="36" height="36" stroke="currentColor" stroke-width="1.3" />
+              <rect x="516" y="43" width="24" height="24" stroke="currentColor" stroke-width="1" stroke-dasharray="3 1.5" />
+              <text x="528" y="84" text-anchor="middle" font-size="6.5" font-family="monospace" fill="currentColor">POD_SHARD</text>
+            </g>
+
+            <!-- Node 9: Circle with Halo (Nominal Target) -->
+            <g class="bp-pulse">
+              <circle cx="638" cy="55" r="12" stroke="currentColor" stroke-width="1.4" />
+              <circle cx="638" cy="55" r="5" stroke="currentColor" stroke-width="1" />
+              <circle cx="638" cy="55" r="2.5" fill="currentColor" />
+              <text x="638" y="78" text-anchor="middle" font-size="6.5" font-family="monospace" fill="currentColor">NOMINAL</text>
+            </g>
+
+            <!-- Small Orange Dot Traveling along the Pipeline in a Loop -->
+            <circle class="bp-orange-runner" r="3.5" fill="#FF4A12">
+              <animateMotion dur="5.5s" repeatCount="indefinite" rotate="auto"
+                path="M 35 55 L 105 55 L 141 55 L 172 55 L 190 55 L 208 55 C 224 55 236 36 255 36 L 275 36 C 295 36 306 55 326 55 L 345 55 L 364 55 L 421 55 L 435 55 L 449 55 L 510 55 L 528 55 L 546 55 L 638 55" />
+            </circle>
+          </svg>
+        </div>
+      </div>
+
+      <!-- RIGHT PANEL (Ink #0B0F14, Paper #F7F5F0 Text): Telemetry Stats & Odometer Digits -->
+      <div class="panel-telemetry">
+        <div class="panel-header-mono">
+          <span class="panel-tag-muted">REAL-TIME TELEMETRY</span>
+          <!-- Pill Toggles: OPS / SEC -->
+          <div class="mode-toggle-group" role="tablist" aria-label="Telemetry Mode Selector">
+            <button class="toggle-pill-btn active" id="btn-mode-ops" role="tab" aria-selected="true" data-cursor="OPS">
+              OPS
+            </button>
+            <button class="toggle-pill-btn" id="btn-mode-sec" role="tab" aria-selected="false" data-cursor="SEC">
+              SEC
+            </button>
+          </div>
+        </div>
+
+        <div class="telemetry-stats-grid">
+          <!-- Stat 1: Uptime 99.99% -->
+          <div class="stat-block">
+            <div class="stat-label-row">
+              <span class="stat-icon" aria-hidden="true">◈</span>
+              <span class="label-text" id="stat-label-1">Uptime</span>
+            </div>
+            <div class="digit-roll-wrapper font-anton" id="stat-roll-1" aria-label="99.99%">
+              <span class="odometer-fallback">99.99%</span>
+            </div>
+          </div>
+
+          <!-- Stat 2: Incidents resolved 12,480 -->
+          <div class="stat-block">
+            <div class="stat-label-row">
+              <span class="stat-icon" aria-hidden="true">▲</span>
+              <span class="label-text" id="stat-label-2">Incidents resolved</span>
+            </div>
+            <div class="digit-roll-wrapper font-anton" id="stat-roll-2" aria-label="12,480">
+              <span class="odometer-fallback">12,480</span>
+            </div>
+          </div>
+
+          <!-- Stat 3: Mean time to resolve 41s -->
+          <div class="stat-block">
+            <div class="stat-label-row">
+              <span class="stat-icon" aria-hidden="true">⏱</span>
+              <span class="label-text" id="stat-label-3">Mean time to resolve</span>
+            </div>
+            <div class="digit-roll-wrapper font-anton" id="stat-roll-3" aria-label="41s">
+              <span class="odometer-fallback">41s</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- SCROLL-LINKED MARQUEE STRIP (120px ink strip)                -->
+  <!-- ============================================================ -->
+  <div id="scroll-marquee-strip" class="scroll-marquee-strip" aria-hidden="true">
+    <div class="marquee-inner-track">
+      <div class="marquee-item">
+        <span>DETECT</span><span class="marquee-bullet">•</span>
+        <span>REASON</span><span class="marquee-bullet">•</span>
+        <span>ACT</span><span class="marquee-bullet">•</span>
+        <span>LEARN</span><span class="marquee-bullet">•</span>
+      </div>
+      <div class="marquee-item">
+        <span>DETECT</span><span class="marquee-bullet">•</span>
+        <span>REASON</span><span class="marquee-bullet">•</span>
+        <span>ACT</span><span class="marquee-bullet">•</span>
+        <span>LEARN</span><span class="marquee-bullet">•</span>
+      </div>
+      <div class="marquee-item">
+        <span>DETECT</span><span class="marquee-bullet">•</span>
+        <span>REASON</span><span class="marquee-bullet">•</span>
+        <span>ACT</span><span class="marquee-bullet">•</span>
+        <span>LEARN</span><span class="marquee-bullet">•</span>
+      </div>
+      <div class="marquee-item">
+        <span>DETECT</span><span class="marquee-bullet">•</span>
+        <span>REASON</span><span class="marquee-bullet">•</span>
+        <span>ACT</span><span class="marquee-bullet">•</span>
+        <span>LEARN</span><span class="marquee-bullet">•</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- PINNED SCROLL SECTION: NOMINAL -> INCIDENT -> RESOLVED       -->
+  <!-- ============================================================ -->
+  <section id="incident-section" class="incident-pinned-section" aria-label="Nominal to Incident Pinned Sequence">
+    <div class="incident-pinned-wrapper">
+      
+      <!-- Three.js Canvas Container (z-index: 4, on top of both layers) -->
+      <div class="incident-three-container">
+        <canvas id="incident-three-canvas"></canvas>
+      </div>
+
+      <!-- LAYER 1: NOMINAL (Bone bg, Ink text) -->
+      <div class="pinned-layer layer-nominal" id="layer-nominal">
+        <!-- Huge background word: z-index 0, 6% opacity, moved down 15vh -->
+        <div class="incident-bg-word-wrap" aria-hidden="true">
+          <div class="incident-bg-word font-anton">NOMINAL</div>
+        </div>
+
+        <div class="incident-grid">
+          <div class="incident-left-col">
+            <div class="stage-label-wrap">
+              <span class="stage-dot"></span>
+              <span class="mono-stage-label">PHASE 02 // STRESS INJECTION</span>
+            </div>
+
+            <h2 class="incident-heading">
+              STATUS: <span class="stage-word-chip">NOMINAL</span>
+            </h2>
+
+            <p class="incident-desc font-mono">
+              Consensus verified across all 12 distributed regions.<br />Zero invariant drift detected. Latency baseline: 0.38ms.
+            </p>
+
+            <!-- 480px Card with 18px type -->
+            <div class="incident-card">
+              <div class="card-row font-mono">
+                <span style="opacity: 0.65;">PROBE:</span>
+                <span class="card-probe-val">eBPF_KERNEL_RING_04</span>
+              </div>
+              
+              <div class="waveform-wrap">
+                <canvas id="nominal-waveform-canvas" class="waveform-canvas"></canvas>
+              </div>
+
+              <div class="card-row-bottom font-mono">
+                <div>
+                  <span style="opacity: 0.65;">LATENCY: </span>
+                  <span class="card-latency-val">0.38ms</span>
+                </div>
+                <div>
+                  <span style="opacity: 0.65;">ACTION: </span>
+                  <span class="card-action-val">CONTINUOUS_MONITORING</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bottom Progress Strip for NOMINAL Layer -->
+        <div class="incident-hud">
+          <div class="font-mono" style="font-size: 0.72rem; opacity: 0.65;">
+            <span>[ INVARIANT RECONSTRUCTION ENGINE ]</span>
+          </div>
+
+          <!-- 4 Step Chips Center -->
+          <div class="step-chips-group" role="tablist" aria-label="Incident Stages">
+            <div class="step-chip active" data-step-index="0">01 NOMINAL</div>
+            <div class="step-chip" data-step-index="1">02 ANOMALY</div>
+            <div class="step-chip" data-step-index="2">03 ISOLATING</div>
+            <div class="step-chip" data-step-index="3">04 RESOLVED</div>
+          </div>
+
+          <!-- Bottom-Right: Spacer for grid balance -->
+          <div class="hud-spacer" aria-hidden="true"></div>
+        </div>
+
+        <!-- Thin 1px Progress Line Across Bottom -->
+        <div class="incident-progress-line-track">
+          <div class="incident-progress-line-fill"></div>
+        </div>
+      </div>
+
+      <!-- LAYER 2: INCIDENT (Ink bg, Paper text) - Revealed via expanding circle clip-path -->
+      <div class="pinned-layer layer-incident" id="layer-incident">
+        <!-- Huge background word: z-index 0, 6% opacity, moved down 15vh -->
+        <div class="incident-bg-word-wrap" aria-hidden="true">
+          <div class="incident-bg-word font-anton">NOMINAL</div>
+        </div>
+
+        <div class="incident-grid">
+          <div class="incident-left-col">
+            <div class="stage-label-wrap">
+              <span class="stage-dot"></span>
+              <span class="mono-stage-label">PHASE 02 // STRESS INJECTION</span>
+            </div>
+
+            <h2 class="incident-heading">
+              STATUS: <span class="stage-word-chip">ANOMALY</span>
+            </h2>
+
+            <p class="incident-desc font-mono">
+              Entropy surge detected on ingress pipeline node 03.<br />Memory leak cascading into worker thread pool. SLA breached.
+            </p>
+
+            <!-- 480px Card with 18px type -->
+            <div class="incident-card">
+              <div class="card-row font-mono">
+                <span style="opacity: 0.65;">PROBE:</span>
+                <span class="card-probe-val">INGRESS_ROUTER_NODE_03</span>
+              </div>
+              
+              <div class="waveform-wrap">
+                <canvas id="incident-waveform-canvas" class="waveform-canvas"></canvas>
+              </div>
+
+              <div class="card-row-bottom font-mono">
+                <div>
+                  <span style="opacity: 0.65;">LATENCY: </span>
+                  <span class="card-latency-val card-val-alert">48.20ms (SPIKE)</span>
+                </div>
+                <div>
+                  <span style="opacity: 0.65;">ACTION: </span>
+                  <span class="card-action-val">TRIPPING_CIRCUIT_BREAKER</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bottom Progress Strip for INCIDENT Layer -->
+        <div class="incident-hud">
+          <div class="font-mono" style="font-size: 0.72rem; opacity: 0.65;">
+            <span>[ INVARIANT RECONSTRUCTION ENGINE ]</span>
+          </div>
+
+          <!-- 4 Step Chips Center -->
+          <div class="step-chips-group" role="tablist" aria-label="Incident Stages">
+            <div class="step-chip active" data-step-index="0">01 NOMINAL</div>
+            <div class="step-chip" data-step-index="1">02 ANOMALY</div>
+            <div class="step-chip" data-step-index="2">03 ISOLATING</div>
+            <div class="step-chip" data-step-index="3">04 RESOLVED</div>
+          </div>
+
+          <!-- Bottom-Right: Spacer for grid balance -->
+          <div class="hud-spacer" aria-hidden="true"></div>
+        </div>
+
+        <!-- Thin 1px Progress Line Across Bottom -->
+        <div class="incident-progress-line-track">
+          <div class="incident-progress-line-fill"></div>
+        </div>
+      </div>
+
+      <!-- Bottom-Right: Single Scroll Percent & Stage Readout (z-index 35, strictly above Three.js lens) -->
+      <div class="hud-progress-right" id="incident-hud-readout">
+        <div class="hud-percent-val font-anton" id="incident-percent-val" aria-label="0%">0%</div>
+        <div class="hud-stage-labels-stack" aria-live="polite">
+          <div class="hud-stage-label font-mono" data-stage="NOMINAL">[ NOMINAL ]</div>
+          <div class="hud-stage-label font-mono" data-stage="ANOMALY">[ ANOMALY ]</div>
+          <div class="hud-stage-label font-mono" data-stage="ISOLATING">[ ISOLATING ]</div>
+          <div class="hud-stage-label font-mono" data-stage="RESOLVED">[ RESOLVED ]</div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- PIPELINE SECTION: Pinned Horizontal Scroll Story (~300vh)   -->
+  <!-- ============================================================ -->
+  <section id="pipeline-section" class="pipeline-section" aria-label="The Autonomous Pipeline Story">
+    <div class="pipeline-pinned-wrapper">
+      
+      <!-- Top HUD: [ THE PIPELINE ] + 01 / 03 Counter -->
+      <div class="pipeline-header-hud">
+        <div class="pipeline-hud-title font-mono">[ THE PIPELINE ]</div>
+        <div class="pipeline-hud-counter font-mono">
+          <span id="pipeline-counter-digit" class="counter-active-digit">01</span>
+          <span class="counter-slash">/</span>
+          <span class="counter-total">03</span>
+        </div>
+      </div>
+
+      <!-- Horizontal Track: 3 Panels -->
+      <div class="pipeline-track" id="pipeline-track">
+        
+        <!-- PANEL 01: DETECT -->
+        <article class="pipeline-panel" data-panel-index="0" aria-label="Pipeline Stage 01: Detect">
+          <div class="panel-left-col">
+            <div class="panel-number-outline font-display" aria-hidden="true">01</div>
+            <div class="panel-content-overlay">
+              <div class="pipeline-stage-pill font-mono">
+                <span class="pill-dot"></span>
+                <span>DETECT // SENSORY_INGRESS</span>
+              </div>
+              <h2 class="pipeline-headline font-display">SEE EVERYTHING.</h2>
+              <p class="pipeline-desc font-mono">
+                Continuous ingestion of distributed telemetry across eBPF probes.<br />
+                Sub-millisecond entropy drift detection with zero dropped events.
+              </p>
+            </div>
+          </div>
+
+          <div class="panel-right-col">
+            <div class="pipeline-card">
+              <div class="card-hud-top font-mono">
+                <span>SENSOR STREAM // eBPF_MESH</span>
+                <span style="color: var(--signal-orange);">LIVE_INGRESS</span>
+              </div>
+              <div class="card-animation-container">
+                <canvas id="detect-stream-canvas"></canvas>
+              </div>
+              <div class="card-hud-bottom font-mono">
+                <span>ANOMALY PROBABILITY: 0.04%</span>
+                <span>48 PROBES ACTIVE</span>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- PANEL 02: REASON -->
+        <article class="pipeline-panel" data-panel-index="1" aria-label="Pipeline Stage 02: Reason">
+          <div class="panel-left-col">
+            <div class="panel-number-outline font-display" aria-hidden="true">02</div>
+            <div class="panel-content-overlay">
+              <div class="pipeline-stage-pill font-mono">
+                <span class="pill-dot"></span>
+                <span>REASON // CAUSAL_INFERENCE</span>
+              </div>
+              <h2 class="pipeline-headline font-display">THINK IN CAUSES.</h2>
+              <p class="pipeline-desc font-mono">
+                Instant causal inference traversing billions of operational nodes.<br />
+                Synthesizing blast-radius topological impact in under 4ms.
+              </p>
+            </div>
+          </div>
+
+          <div class="panel-right-col">
+            <div class="pipeline-card">
+              <div class="card-hud-top font-mono">
+                <span>CAUSAL TOPOLOGY // DAG_GRAPH</span>
+                <span style="color: var(--signal-orange);">ROOT_ISOLATION</span>
+              </div>
+              <div class="card-animation-container">
+                <svg class="reason-tree-svg" viewBox="0 0 420 340" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <!-- Root Node -->
+                  <circle cx="210" cy="40" r="8" class="tree-node-marker tree-node-highlight" />
+                  <text x="210" y="24" text-anchor="middle" class="tree-node-text">[ ROOT CAUSE ]</text>
+
+                  <!-- Tier 1 Branches -->
+                  <path d="M 210 40 L 95 130" class="tree-branch-line" />
+                  <path d="M 210 40 L 210 130" class="tree-branch-line tree-branch-highlight" />
+                  <path d="M 210 40 L 325 130" class="tree-branch-line" />
+
+                  <!-- Tier 1 Nodes -->
+                  <circle cx="95" cy="130" r="6" class="tree-node-marker" />
+                  <circle cx="210" cy="130" r="7" class="tree-node-marker tree-node-highlight" />
+                  <circle cx="325" cy="130" r="6" class="tree-node-marker" />
+                  <text x="210" y="152" text-anchor="middle" class="tree-node-text">[ IMPACT: 42 SHARDS ]</text>
+
+                  <!-- Tier 2 Branches -->
+                  <path d="M 210 130 L 140 230" class="tree-branch-line tree-branch-highlight" />
+                  <path d="M 210 130 L 280 230" class="tree-branch-line" />
+                  <path d="M 95 130 L 50 230" class="tree-branch-line" />
+                  <path d="M 325 130 L 370 230" class="tree-branch-line" />
+
+                  <!-- Tier 2 Nodes -->
+                  <circle cx="140" cy="230" r="7" class="tree-node-marker tree-node-highlight" />
+                  <circle cx="280" cy="230" r="5" class="tree-node-marker" />
+                  <circle cx="50" cy="230" r="5" class="tree-node-marker" />
+                  <circle cx="370" cy="230" r="5" class="tree-node-marker" />
+                  <text x="140" y="254" text-anchor="middle" class="tree-node-text">[ FIX: AUTONOMOUS ROLLBACK ]</text>
+
+                  <!-- Final Leaf Node -->
+                  <path d="M 140 230 L 210 300" class="tree-branch-line tree-branch-highlight" />
+                  <circle cx="210" cy="300" r="9" class="tree-node-marker tree-node-highlight" />
+                  <text x="210" y="322" text-anchor="middle" class="tree-node-text" style="fill: var(--signal-orange); font-weight: 700;">[ VERIFIED PATH ]</text>
+                </svg>
+              </div>
+              <div class="card-hud-bottom font-mono">
+                <span>INFERENCE CONFIDENCE: 99.98%</span>
+                <span>LATENCY: 3.8ms</span>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- PANEL 03: ACT -->
+        <article class="pipeline-panel" data-panel-index="2" aria-label="Pipeline Stage 03: Act">
+          <div class="panel-left-col">
+            <div class="panel-number-outline font-display" aria-hidden="true">03</div>
+            <div class="panel-content-overlay">
+              <div class="pipeline-stage-pill font-mono">
+                <span class="pill-dot"></span>
+                <span>ACT // AUTONOMOUS_EXEC</span>
+              </div>
+              <h2 class="pipeline-headline font-display">FIX IT. ALONE.</h2>
+              <p class="pipeline-desc font-mono">
+                Zero-touch deterministic remediation executed at kernel level.<br />
+                Autonomous rollback and immutable container respawn without humans.
+              </p>
+            </div>
+          </div>
+
+          <div class="panel-right-col">
+            <div class="pipeline-card">
+              <div class="card-hud-top font-mono">
+                <span>ACTION SEQUENCE // DETERMINISTIC</span>
+                <span style="color: var(--signal-orange);">AUTONOMOUS</span>
+              </div>
+              <div class="card-animation-container">
+                <div class="act-checklist-wrap">
+                  <div class="act-checklist">
+                    <div class="act-row" data-act-row="0">
+                      <div class="act-row-label">
+                        <span class="act-row-index">01</span>
+                        <span>QUARANTINE_AFFECTED_INGRESS_SHARD</span>
+                      </div>
+                      <div class="act-check-icon">
+                        <svg class="check-svg" viewBox="0 0 16 16" fill="none">
+                          <path class="check-path" d="M 3 8 L 6.5 12 L 13 4" />
+                        </svg>
+                      </div>
+                    </div>
+
+                    <div class="act-row" data-act-row="1">
+                      <div class="act-row-label">
+                        <span class="act-row-index">02</span>
+                        <span>SYNTHESIZE_CRYPTOGRAPHIC_PARTITION</span>
+                      </div>
+                      <div class="act-check-icon">
+                        <svg class="check-svg" viewBox="0 0 16 16" fill="none">
+                          <path class="check-path" d="M 3 8 L 6.5 12 L 13 4" />
+                        </svg>
+                      </div>
+                    </div>
+
+                    <div class="act-row" data-act-row="2">
+                      <div class="act-row-label">
+                        <span class="act-row-index">03</span>
+                        <span>DEPLOY_CANARY_ROLLBACK_IMAGE_V4.18</span>
+                      </div>
+                      <div class="act-check-icon">
+                        <svg class="check-svg" viewBox="0 0 16 16" fill="none">
+                          <path class="check-path" d="M 3 8 L 6.5 12 L 13 4" />
+                        </svg>
+                      </div>
+                    </div>
+
+                    <div class="act-row" data-act-row="3">
+                      <div class="act-row-label">
+                        <span class="act-row-index">04</span>
+                        <span>VERIFY_LEDGER_CONSENSUS_STATE</span>
+                      </div>
+                      <div class="act-check-icon">
+                        <svg class="check-svg" viewBox="0 0 16 16" fill="none">
+                          <path class="check-path" d="M 3 8 L 6.5 12 L 13 4" />
+                        </svg>
+                      </div>
+                    </div>
+
+                    <div class="act-row" data-act-row="4">
+                      <div class="act-row-label">
+                        <span class="act-row-index">05</span>
+                        <span>RESTORE_GLOBAL_TRAFFIC_TOPOLOGY</span>
+                      </div>
+                      <div class="act-check-icon">
+                        <svg class="check-svg" viewBox="0 0 16 16" fill="none">
+                          <path class="check-path" d="M 3 8 L 6.5 12 L 13 4" />
+                        </svg>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="act-overall-progress">
+                    <div class="act-progress-meta">
+                      <span>EXECUTION INTEGRITY</span>
+                      <span id="act-percent-label" style="color: var(--signal-orange); font-weight: 700;">0%</span>
+                    </div>
+                    <div class="act-progress-bar">
+                      <div id="act-progress-fill" class="act-progress-fill"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="card-hud-bottom font-mono">
+                <span>MEAN TIME TO REMEDIATE: 41ms</span>
+                <span>ZERO HUMAN TOUCH</span>
+              </div>
+            </div>
+          </div>
+        </article>
+
+      </div>
+
+      <!-- Bottom Progress Line & 3 Tick Markers -->
+      <div class="pipeline-bottom-hud">
+        <div class="pipeline-ticks-row">
+          <div class="pipeline-tick active" data-tick-index="0">
+            <span class="tick-dot"></span>
+            <span>01 DETECT</span>
+          </div>
+          <div class="pipeline-tick" data-tick-index="1">
+            <span class="tick-dot"></span>
+            <span>02 REASON</span>
+          </div>
+          <div class="pipeline-tick" data-tick-index="2">
+            <span class="tick-dot"></span>
+            <span>03 ACT</span>
+          </div>
+        </div>
+        <div class="pipeline-progress-track">
+          <div id="pipeline-progress-fill" class="pipeline-progress-fill"></div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- CONTROL ROOM: Simulated Live Ops Dashboard (Normal flow)    -->
+  <!-- ============================================================ -->
+  <section id="control-room-section" class="control-room-section" aria-label="The Control Room Live Operations Dashboard">
+    <div class="control-room-scanline" id="cr-scanline"></div>
+
+    <div class="control-room-container">
+      
+      <!-- Header Row -->
+      <header class="control-room-header">
+        <div class="cr-meta-row font-mono">
+          <span>[ THE CONTROL ROOM ]</span>
+          <div class="cr-clock-wrap">
+            <span class="cr-live-dot"></span>
+            <span>UTC LIVE: </span>
+            <span id="cr-clock">00:00:00</span>
+          </div>
+        </div>
+
+        <h2 class="cr-headline font-display">WATCH IT HEAL ITSELF.</h2>
+
+        <!-- Command Bar: Trigger Button & Status Chip -->
+        <div class="cr-command-bar">
+          <button id="cr-trigger-btn" class="cr-trigger-btn magnetic-btn" data-cursor="RUN" aria-label="Trigger Simulated Incident Sequence">
+            <span class="cr-btn-fill" id="cr-btn-fill"></span>
+            <span class="cr-btn-label">
+              <span>▶</span>
+              <span>TRIGGER INCIDENT</span>
+            </span>
+          </button>
+
+          <div id="cr-status-chip" class="cr-status-chip font-mono">
+            <span class="cr-chip-indicator"></span>
+            <span id="cr-chip-text">ALL SYSTEMS NOMINAL</span>
+          </div>
+        </div>
+      </header>
+
+      <!-- Bento Grid (12 columns, 16px gap, 20px radius, cards in #11161D) -->
+      <div class="control-room-bento">
+
+        <!-- 1. SERVICE HEALTH MAP (7 cols) -->
+        <div class="bento-card col-span-7 service-map-card" data-cursor="VIEW">
+          <div class="card-inner-content">
+            <div class="bento-title-row font-mono">
+              <span>SERVICE HEALTH MAP // DISTRIBUTED MESH</span>
+              <span class="bento-tag-muted">72 NODES</span>
+            </div>
+
+            <div class="health-grid-wrap">
+              <div class="health-tooltip font-mono" id="health-tooltip"></div>
+              <div class="health-grid" id="health-grid"></div>
+            </div>
+
+            <div class="health-meta-footer font-mono">
+              <span>TOPOLOGY: MULTI-REGION eBPF</span>
+              <span>INVARIANT STATUS: 100% HEALTHY</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2. LATENCY CHART (5 cols) -->
+        <div class="bento-card col-span-5 latency-card" data-cursor="VIEW">
+          <div class="card-inner-content">
+            <div class="bento-title-row font-mono">
+              <span>LATENCY STREAM // P99</span>
+              <span class="bento-tag-muted">120MS STREAM</span>
+            </div>
+
+            <div class="latency-metric-header">
+              <div>
+                <div id="p99-readout" class="p99-readout font-anton" aria-label="0.42ms">
+                  0.42ms
+                </div>
+                <div class="font-mono" style="font-size: 0.68rem; opacity: 0.65; margin-top: 0.2rem;">
+                  GLOBAL P99 SYNTHETIC PROBE
+                </div>
+              </div>
+              <div class="font-mono" style="font-size: 0.72rem; color: var(--signal-orange);">
+                SLA THRESHOLD: 25.0ms
+              </div>
+            </div>
+
+            <div class="latency-canvas-wrap">
+              <canvas id="latency-chart-canvas"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3. LIVE LOG FEED (5 cols) -->
+        <div class="bento-card col-span-5 logs-card" data-cursor="VIEW">
+          <div class="card-inner-content">
+            <div class="bento-title-row font-mono">
+              <span>LIVE SYSTEM TELEMETRY // LOGS</span>
+              <span class="bento-tag-muted">STREAM BUFFER</span>
+            </div>
+
+            <div class="logs-container font-mono" id="logs-container">
+              <!-- Log entries appended dynamically, max 14 -->
+            </div>
+          </div>
+        </div>
+
+        <!-- 4. AI REASONING (7 cols) -->
+        <div class="bento-card col-span-7 reasoning-card" data-cursor="VIEW">
+          <div class="card-inner-content">
+            <div class="bento-title-row font-mono">
+              <span>AI REASONING CORE // CAUSAL ENGINE</span>
+              <span class="bento-tag-muted">ZERO-TOUCH KERNEL</span>
+            </div>
+
+            <div class="terminal-window font-mono" id="terminal-body">
+              <!-- Terminal typed lines -->
+            </div>
+
+            <div class="confidence-bar-wrap font-mono">
+              <span>CONFIDENCE RATING</span>
+              <div class="confidence-track">
+                <div class="confidence-fill" id="confidence-fill"></div>
+              </div>
+              <span>99%</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 5. KPI STRIP (12 cols, 4 cells) -->
+        <div class="bento-card col-span-12 kpi-strip-card" data-cursor="VIEW">
+          <div class="card-inner-content">
+            <div class="bento-title-row font-mono" style="margin-bottom: 0.6rem;">
+              <span>OPERATIONAL INVARIANTS // METRICS</span>
+              <span class="bento-tag-muted">SYSTEM TELEMETRY</span>
+            </div>
+
+            <div class="kpi-grid">
+              <!-- Cell 1: ERROR RATE -->
+              <div class="kpi-cell">
+                <div class="kpi-label-row font-mono">
+                  <span>ERROR RATE</span>
+                  <span class="kpi-delta-chip font-mono">0.00%</span>
+                </div>
+                <div class="kpi-number-wrap">
+                  <div class="kpi-value font-anton" id="kpi-error-val" aria-label="0.00%">0.00%</div>
+                </div>
+                <svg class="sparkline-svg" viewBox="0 0 160 28" fill="none">
+                  <polyline points="0,22 30,22 60,20 90,22 120,22 160,22" class="sparkline-path" />
+                </svg>
+              </div>
+
+              <!-- Cell 2: REQUESTS/SEC -->
+              <div class="kpi-cell">
+                <div class="kpi-label-row font-mono">
+                  <span>REQUESTS / SEC</span>
+                  <span class="kpi-delta-chip font-mono">+4.2%</span>
+                </div>
+                <div class="kpi-number-wrap">
+                  <div class="kpi-value font-anton" id="kpi-req-val" aria-label="48,290">48,290</div>
+                </div>
+                <svg class="sparkline-svg" viewBox="0 0 160 28" fill="none">
+                  <polyline points="0,16 30,12 60,18 90,10 120,14 160,8" class="sparkline-path" />
+                </svg>
+              </div>
+
+              <!-- Cell 3: ACTIVE NODES -->
+              <div class="kpi-cell">
+                <div class="kpi-label-row font-mono">
+                  <span>ACTIVE NODES</span>
+                  <span class="kpi-delta-chip font-mono">100% ONLINE</span>
+                </div>
+                <div class="kpi-number-wrap">
+                  <div class="kpi-value font-anton" id="kpi-nodes-val" aria-label="1,024">1,024</div>
+                </div>
+                <svg class="sparkline-svg" viewBox="0 0 160 28" fill="none">
+                  <polyline points="0,14 40,14 80,14 120,14 160,14" class="sparkline-path" />
+                </svg>
+              </div>
+
+              <!-- Cell 4: MTTR -->
+              <div class="kpi-cell">
+                <div class="kpi-label-row font-mono">
+                  <span>MTTR (MEAN RESOLUTION)</span>
+                  <span class="kpi-delta-chip font-mono">P99 TARGET</span>
+                </div>
+                <div class="kpi-number-wrap">
+                  <div class="kpi-value font-anton" id="kpi-mttr-val" aria-label="41ms">41ms</div>
+                </div>
+                <svg class="sparkline-svg" viewBox="0 0 160 28" fill="none">
+                  <polyline points="0,20 40,18 80,10 120,8 160,6" class="sparkline-path" />
+                </svg>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- SECTION A: CAPABILITIES (Bone background, Normal flow)       -->
+  <!-- ============================================================ -->
+  <section id="capabilities-section" class="capabilities-section" aria-label="NEXUS Capabilities">
+    <div id="cap-floating-preview" class="cap-floating-preview" aria-hidden="true"></div>
+
+    <div class="capabilities-container">
+      <header class="capabilities-header">
+        <span class="cap-meta-label font-mono">[ CAPABILITIES ]</span>
+        <h2 class="cap-headline font-display">BUILT TO RUN WITHOUT YOU.</h2>
+      </header>
+
+      <div class="capabilities-list" role="list">
+        
+        <!-- Row 01 -->
+        <article class="cap-row" role="listitem" data-cap-index="0" data-cursor="VIEW">
+          <div class="cap-row-fill"></div>
+          <div class="cap-row-content">
+            <span class="cap-index font-mono">01</span>
+            <h3 class="cap-title font-display">AUTONOMOUS DETECTION</h3>
+            <p class="cap-desc font-mono">Sub-millisecond eBPF telemetry ingestion across multi-cloud topologies.</p>
+            <span class="cap-arrow font-mono" aria-hidden="true">↗</span>
+          </div>
+        </article>
+
+        <!-- Row 02 -->
+        <article class="cap-row" role="listitem" data-cap-index="1" data-cursor="VIEW">
+          <div class="cap-row-fill"></div>
+          <div class="cap-row-content">
+            <span class="cap-index font-mono">02</span>
+            <h3 class="cap-title font-display">CAUSAL REASONING</h3>
+            <p class="cap-desc font-mono">Topological blast-radius inference and probabilistic root-cause synthesis.</p>
+            <span class="cap-arrow font-mono" aria-hidden="true">↗</span>
+          </div>
+        </article>
+
+        <!-- Row 03 -->
+        <article class="cap-row" role="listitem" data-cap-index="2" data-cursor="VIEW">
+          <div class="cap-row-fill"></div>
+          <div class="cap-row-content">
+            <span class="cap-index font-mono">03</span>
+            <h3 class="cap-title font-display">ZERO-TOUCH REMEDIATION</h3>
+            <p class="cap-desc font-mono">Deterministic state rollbacks and immutable container quarantine without humans.</p>
+            <span class="cap-arrow font-mono" aria-hidden="true">↗</span>
+          </div>
+        </article>
+
+        <!-- Row 04 -->
+        <article class="cap-row" role="listitem" data-cap-index="3" data-cursor="VIEW">
+          <div class="cap-row-fill"></div>
+          <div class="cap-row-content">
+            <span class="cap-index font-mono">04</span>
+            <h3 class="cap-title font-display">CONTINUOUS LEARNING</h3>
+            <p class="cap-desc font-mono">Autonomous invariant synthesis adapting to workload shifts and entropy drift.</p>
+            <span class="cap-arrow font-mono" aria-hidden="true">↗</span>
+          </div>
+        </article>
+
+        <!-- Row 05 -->
+        <article class="cap-row" role="listitem" data-cap-index="4" data-cursor="VIEW">
+          <div class="cap-row-fill"></div>
+          <div class="cap-row-content">
+            <span class="cap-index font-mono">05</span>
+            <h3 class="cap-title font-display">FLEET OBSERVABILITY</h3>
+            <p class="cap-desc font-mono">Unified consensus ledger telemetry with sub-millisecond drift verification.</p>
+            <span class="cap-arrow font-mono" aria-hidden="true">↗</span>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- SECTION B: BIG MARQUEE (Ink background, 2 stacked rows)      -->
+  <!-- ============================================================ -->
+  <section id="big-marquee-section" class="big-marquee-section" aria-label="Brand Velocity Marquee">
+    <div class="big-marquee-wrapper">
+      
+      <!-- Row 1: Filled paper Anton words scrolling LEFT -->
+      <div class="big-marquee-row big-marquee-row-1" aria-hidden="true">
+        <div class="big-marquee-track big-marquee-track-1">
+          <div class="big-marquee-item">
+            <span>AUTOMATE</span> <span class="marquee-bullet">•</span>
+            <span>DETECT</span> <span class="marquee-bullet">•</span>
+            <span>RESOLVE</span> <span class="marquee-bullet">•</span>
+            <span>LEARN</span> <span class="marquee-bullet">•</span>
+          </div>
+          <div class="big-marquee-item">
+            <span>AUTOMATE</span> <span class="marquee-bullet">•</span>
+            <span>DETECT</span> <span class="marquee-bullet">•</span>
+            <span>RESOLVE</span> <span class="marquee-bullet">•</span>
+            <span>LEARN</span> <span class="marquee-bullet">•</span>
+          </div>
+          <div class="big-marquee-item">
+            <span>AUTOMATE</span> <span class="marquee-bullet">•</span>
+            <span>DETECT</span> <span class="marquee-bullet">•</span>
+            <span>RESOLVE</span> <span class="marquee-bullet">•</span>
+            <span>LEARN</span> <span class="marquee-bullet">•</span>
+          </div>
+          <div class="big-marquee-item">
+            <span>AUTOMATE</span> <span class="marquee-bullet">•</span>
+            <span>DETECT</span> <span class="marquee-bullet">•</span>
+            <span>RESOLVE</span> <span class="marquee-bullet">•</span>
+            <span>LEARN</span> <span class="marquee-bullet">•</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Row 2: 1px outlined words scrolling RIGHT -->
+      <div class="big-marquee-row big-marquee-row-2" aria-hidden="true">
+        <div class="big-marquee-track big-marquee-track-2">
+          <div class="big-marquee-item">
+            <span>AUTOMATE</span> <span class="marquee-bullet">•</span>
+            <span>DETECT</span> <span class="marquee-bullet">•</span>
+            <span>RESOLVE</span> <span class="marquee-bullet">•</span>
+            <span>LEARN</span> <span class="marquee-bullet">•</span>
+          </div>
+          <div class="big-marquee-item">
+            <span>AUTOMATE</span> <span class="marquee-bullet">•</span>
+            <span>DETECT</span> <span class="marquee-bullet">•</span>
+            <span>RESOLVE</span> <span class="marquee-bullet">•</span>
+            <span>LEARN</span> <span class="marquee-bullet">•</span>
+          </div>
+          <div class="big-marquee-item">
+            <span>AUTOMATE</span> <span class="marquee-bullet">•</span>
+            <span>DETECT</span> <span class="marquee-bullet">•</span>
+            <span>RESOLVE</span> <span class="marquee-bullet">•</span>
+            <span>LEARN</span> <span class="marquee-bullet">•</span>
+          </div>
+          <div class="big-marquee-item">
+            <span>AUTOMATE</span> <span class="marquee-bullet">•</span>
+            <span>DETECT</span> <span class="marquee-bullet">•</span>
+            <span>RESOLVE</span> <span class="marquee-bullet">•</span>
+            <span>LEARN</span> <span class="marquee-bullet">•</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+  </main>
+
+  <!-- ============================================================ -->
+  <!-- SECTION C: FOOTER (Bone background)                         -->
+  <!-- ============================================================ -->
+  <footer id="site-footer" class="site-footer" aria-label="Site Footer">
+    <div class="footer-container">
+      
+      <!-- Giant Measured "LET'S TALK" Title -->
+      <div class="footer-title-wrap">
+        <h2 class="footer-giant-title font-display" id="footer-giant-title">
+          <span class="footer-letter">L</span>
+          <span class="footer-letter">E</span>
+          <span class="footer-letter">T</span>
+          <span class="footer-letter">&#39;</span>
+          <span class="footer-letter">S</span>
+          <span class="footer-letter-spacer">&nbsp;</span>
+          <span class="footer-letter">T</span>
+          <span class="footer-letter">A</span>
+          <span class="footer-letter">L</span>
+          <span class="footer-letter">K</span>
+        </h2>
+      </div>
+
+      <!-- Actions Row: Email Pill + Book Demo + Back To Top -->
+      <div class="footer-actions-row">
+        <div class="footer-cta-group">
+          <div style="position: relative;">
+            <div id="footer-toast" class="footer-toast font-mono">COPIED</div>
+            <button id="footer-email-btn" class="footer-email-btn magnetic-btn" data-cursor="COPY" aria-label="Copy email hello@nexus.ai to clipboard">
+              <span>hello@nexus.ai</span>
+              <span>↗</span>
+            </button>
+          </div>
+
+          <button class="footer-demo-btn magnetic-btn" data-cursor="CLICK" aria-label="Book a demonstration">
+            <span>Book a demo</span>
+          </button>
+        </div>
+
+        <button id="back-to-top-btn" class="back-to-top-btn magnetic-btn" data-cursor="TOP" aria-label="Scroll back to top">
+          <span>↑</span>
+        </button>
+      </div>
+
+      <!-- Hairline Divider -->
+      <div class="footer-meta-divider"></div>
+
+      <!-- Columns Grid -->
+      <div class="footer-columns-grid">
+        <!-- Col 1: Platform -->
+        <div class="footer-col">
+          <span class="footer-col-title">PLATFORM</span>
+          <ul class="footer-col-list">
+            <li><a href="#control-room-section" class="footer-link">Autonomous Mesh</a></li>
+            <li><a href="#capabilities-section" class="footer-link">Causal Inference</a></li>
+            <li><a href="#pipeline-section" class="footer-link">Zero-Touch Kernel</a></li>
+            <li><a href="#control-room-section" class="footer-link">eBPF Telemetry</a></li>
+          </ul>
+        </div>
+
+        <!-- Col 2: Company -->
+        <div class="footer-col">
+          <span class="footer-col-title">COMPANY</span>
+          <ul class="footer-col-list">
+            <li><a href="#" class="footer-link">Mission</a></li>
+            <li><a href="#" class="footer-link">Engineering</a></li>
+            <li><a href="#" class="footer-link">Architecture</a></li>
+            <li><a href="#" class="footer-link">Careers</a></li>
+          </ul>
+        </div>
+
+        <!-- Col 3: Legal -->
+        <div class="footer-col">
+          <span class="footer-col-title">LEGAL</span>
+          <ul class="footer-col-list">
+            <li><a href="#" class="footer-link">Privacy Policy</a></li>
+            <li><a href="#" class="footer-link">Terms of Service</a></li>
+            <li><a href="#" class="footer-link">Security Invariants</a></li>
+            <li><a href="#" class="footer-link">SOC2 Type II</a></li>
+          </ul>
+        </div>
+
+        <!-- Col 4: Status & Telemetry -->
+        <div class="footer-col footer-telemetry-col">
+          <div class="footer-status-chip font-mono">
+            <span class="footer-pulse-dot"></span>
+            <span>ALL SYSTEMS NOMINAL</span>
+          </div>
+          <div class="footer-clock-wrap font-mono">
+            <span>LOCAL: </span>
+            <span id="footer-clock">00:00:00</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bottom Copyright Row -->
+      <div class="footer-bottom-row">
+        <span>© 2026 NEXUS OPERATIONAL FABRIC INC. ALL RIGHTS RESERVED.</span>
+        <span>AUTONOMOUS COMMAND ARCHITECTURE</span>
+      </div>
+
+    </div>
+  </footer>
+
+  <!-- Application Entry Point -->
+  <script type="module" src="/src/js/main.js"></script>
+</body>
+</html>
