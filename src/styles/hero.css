@@ -440,11 +440,127 @@
 .digit-roll-wrapper {
   font-family: var(--font-display);
   font-size: clamp(1.6rem, 3.2vw, 2.5rem);
-  line-height: 1;
+  line-height: 1.1;
   letter-spacing: -0.01em;
   color: var(--paper);
   display: flex;
   align-items: baseline;
-  height: 1.15em;
+  height: 1.25em;
   overflow: hidden;
 }
+
+/* ==========================================================================
+   HERO RESPONSIVE RULES (Tablets & Mobile)
+   ========================================================================== */
+@media (max-width: 900px) {
+  .viewport-root {
+    height: auto;
+    max-height: none;
+    min-height: 100svh;
+    overflow: visible;
+  }
+
+  .hero-stage {
+    height: calc(100svh - 220px);
+    min-height: 380px;
+    max-height: none;
+  }
+
+  .hero-labels-overlay {
+    padding: 84px 20px 1rem;
+  }
+
+  .labels-row-top {
+    font-size: 0.65rem;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .labels-row-bottom {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+
+  .descriptor-text {
+    max-width: 100%;
+    font-size: 0.68rem;
+  }
+
+  .scroll-prompt {
+    font-size: 0.65rem;
+  }
+
+  .hero-bottom-bar {
+    height: auto;
+    min-height: 0;
+    max-height: none;
+    grid-template-columns: 1fr;
+  }
+
+  .panel-blueprint {
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+    padding: 16px 20px;
+    min-height: 140px;
+  }
+
+  .panel-telemetry {
+    padding: 16px 20px;
+    min-height: 160px;
+  }
+
+  .telemetry-stats-grid {
+    gap: 1rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .site-header {
+    padding: 0 1rem;
+    top: 0.85rem;
+  }
+
+  .nav-pill-main {
+    padding: 0.4rem 0.9rem;
+  }
+
+  .nav-logo {
+    font-size: 1.15rem;
+  }
+
+  .pill-cta {
+    padding: 0.45rem 0.9rem;
+    font-size: 0.68rem;
+  }
+
+  .hero-stage {
+    height: calc(100svh - 260px);
+    min-height: 340px;
+  }
+
+  .hero-labels-overlay {
+    padding: 72px 14px 0.85rem;
+  }
+
+  .labels-row-top {
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .descriptor-text {
+    font-size: 0.64rem;
+    line-height: 1.45;
+  }
+
+  .telemetry-stats-grid {
+    grid-template-columns: 1fr;
+    gap: 0.85rem;
+  }
+
+  .digit-roll-wrapper {
+    font-size: 1.8rem;
+  }
+}
+

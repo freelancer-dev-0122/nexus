@@ -41,12 +41,14 @@
 
 .cap-headline {
   font-family: var(--font-display);
-  font-size: clamp(3.2rem, 7vw, 6.4rem);
-  line-height: 0.9;
+  font-size: clamp(2.4rem, 6.5vw, 6.4rem);
+  line-height: 0.98;
   letter-spacing: -0.02em;
   text-transform: uppercase;
   color: var(--ink);
   margin: 0;
+  padding: 0.05em 0;
+  word-break: break-word;
 }
 
 .cap-headline .split-char {
@@ -116,12 +118,14 @@
 
 .cap-title {
   font-family: var(--font-display);
-  font-size: clamp(2.4rem, 4.8vw, 5.2rem);
-  line-height: 0.92;
+  font-size: clamp(2rem, 4.4vw, 5.2rem);
+  line-height: 0.98;
   letter-spacing: -0.02em;
   text-transform: uppercase;
   margin: 0;
+  padding: 0.05em 0;
   transition: color 0.35s ease;
+  word-break: break-word;
 }
 
 .cap-desc {
@@ -222,6 +226,37 @@
 
   .cap-floating-preview {
     display: none !important;
+  }
+}
+
+@media (max-width: 600px) {
+  .capabilities-section {
+    padding: 70px 0;
+  }
+
+  .capabilities-header {
+    margin-bottom: 2.5rem;
+  }
+
+  .cap-headline {
+    font-size: 2.2rem;
+  }
+
+  .cap-row-content {
+    grid-template-columns: 28px 1fr 24px;
+    gap: 0.5rem;
+  }
+
+  .cap-title {
+    font-size: 1.8rem;
+  }
+
+  .cap-desc {
+    font-size: 0.75rem;
+  }
+
+  .cap-row {
+    padding: 1.5rem 0;
   }
 }
 

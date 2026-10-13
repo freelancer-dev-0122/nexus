@@ -161,17 +161,17 @@
   background-color: var(--paper);
 }
 
-/* Headline: max-width 60%, clamp(56px, 7vw, 104px), wraps onto two lines */
 .pipeline-headline {
   font-family: var(--font-display);
-  font-size: clamp(56px, 7vw, 104px);
-  line-height: 0.92;
+  font-size: clamp(38px, 6.5vw, 104px);
+  line-height: 0.98;
   letter-spacing: -0.02em;
   text-transform: uppercase;
   color: var(--ink);
   margin: 0;
-  max-width: 60%;
+  max-width: 100%;
   word-break: break-word;
+  padding: 0.05em 0;
 }
 
 .char-mask {
@@ -504,28 +504,55 @@
     width: 100%;
     height: auto;
     grid-template-columns: 1fr;
-    padding: 4rem 1.5rem;
-    gap: 3rem;
+    padding: 3.5rem 1.5rem;
+    gap: 2.5rem;
     opacity: 1 !important;
     visibility: visible !important;
   }
 
+  .panel-left-col {
+    max-width: 100%;
+  }
+
   .panel-number-outline {
-    font-size: 16rem;
-    left: -1rem;
-    top: 2rem;
+    font-size: clamp(8rem, 24vw, 14rem);
+    left: -0.5rem;
+    top: 1rem;
     transform: none;
+    opacity: 0.1;
   }
 
   .pipeline-card {
     width: 100%;
     min-width: 0;
-    height: 420px;
-    min-height: 0;
+    height: auto;
+    min-height: 380px;
   }
 
   .pipeline-bottom-hud {
     display: none;
+  }
+}
+
+@media (max-width: 600px) {
+  .pipeline-panel {
+    padding: 2.5rem 1rem;
+    gap: 2rem;
+  }
+
+  .pipeline-desc {
+    font-size: 15px;
+    line-height: 1.5;
+  }
+
+  .pipeline-card {
+    min-height: 340px;
+    padding: 1.25rem 1rem;
+  }
+
+  .act-row {
+    font-size: 0.7rem;
+    padding: 0.45rem 0.6rem;
   }
 }
 

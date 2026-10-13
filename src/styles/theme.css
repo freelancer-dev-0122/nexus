@@ -51,11 +51,12 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-.font-anton {
+.font-anton,
+.font-display {
   font-family: var(--font-display);
   text-transform: uppercase;
   letter-spacing: -0.02em;
-  line-height: 0.85;
+  line-height: 0.95;
 }
 
 .font-mono {
@@ -192,11 +193,12 @@ body {
   gap: 1.2rem;
   color: var(--paper);
   text-decoration: none;
-  font-size: clamp(2.4rem, 8vw, 4rem);
-  line-height: 0.92;
+  font-size: clamp(2.2rem, 8vw, 3.8rem);
+  line-height: 1.05;
   letter-spacing: -0.02em;
   transition: color 0.2s ease, transform 0.25s ease;
   transform: translateX(0);
+  padding: 0.05em 0;
 }
 
 .mobile-nav-link:hover,

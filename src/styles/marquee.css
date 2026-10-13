@@ -28,8 +28,8 @@
 
 .marquee-item {
   font-family: var(--font-display);
-  font-size: clamp(2.4rem, 4.2vw, 3.8rem);
-  line-height: 1;
+  font-size: clamp(2rem, 4.2vw, 3.8rem);
+  line-height: 1.1;
   letter-spacing: 0.06em;
   text-transform: uppercase;
   color: var(--paper);
@@ -43,4 +43,16 @@
 .marquee-bullet {
   color: var(--signal-orange);
   font-size: 0.8em;
+}
+
+@media (max-width: 600px) {
+  .scroll-marquee-strip {
+    height: 90px;
+  }
+
+  .marquee-item {
+    font-size: 1.8rem;
+    gap: 1rem;
+    padding: 0 1rem;
+  }
 }

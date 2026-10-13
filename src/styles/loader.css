@@ -54,12 +54,13 @@ body.is-loading {
   display: flex;
   align-items: baseline;
   font-family: var(--font-mono);
-  font-size: clamp(4.5rem, 14vw, 12rem);
-  line-height: 0.85;
+  font-size: clamp(3.8rem, 14vw, 12rem);
+  line-height: 0.98;
   font-weight: 700;
   letter-spacing: -0.04em;
   font-variant-numeric: tabular-nums;
   color: var(--ink);
+  padding: 0.05em 0;
 }
 
 .loader-pct-symbol {
@@ -75,6 +76,21 @@ body.is-loading {
   color: rgba(11, 15, 20, 0.6);
   text-align: right;
   max-width: 280px;
+}
+
+@media (max-width: 600px) {
+  .loader-bottom {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+    padding-bottom: 2rem;
+  }
+
+  .loader-status-note {
+    text-align: left;
+    max-width: 100%;
+    font-size: 0.7rem;
+  }
 }
 
 /* Thin Ink Progress Line at the Bottom */

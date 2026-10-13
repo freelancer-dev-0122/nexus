@@ -130,8 +130,8 @@
 /* Heading: STATUS: <WORD> in Anton 72px+ */
 .incident-heading {
   font-family: var(--font-display);
-  font-size: clamp(3.2rem, 5.5vw, 5.2rem);
-  line-height: 0.88;
+  font-size: clamp(2.4rem, 5.5vw, 5.2rem);
+  line-height: 0.98;
   letter-spacing: -0.02em;
   text-transform: uppercase;
   margin: 0;
@@ -139,6 +139,7 @@
   flex-wrap: wrap;
   align-items: baseline;
   gap: 0.3em;
+  padding: 0.1em 0;
 }
 
 /* Orange accent rules:
@@ -147,15 +148,17 @@
 .layer-nominal .stage-word-chip {
   background-color: var(--signal-orange);
   color: var(--ink);
-  padding: 0.05em 0.3em;
+  padding: 0.08em 0.35em;
   border-radius: 4px;
   line-height: 1;
+  display: inline-block;
 }
 
 .layer-incident .stage-word-chip {
   color: var(--signal-orange);
   background: transparent;
   padding: 0;
+  display: inline-block;
 }
 
 /* Short Two-line Mono Description */
@@ -402,33 +405,101 @@
    RESPONSIVE & ACCESSIBILITY RULES
    ========================================================================== */
 @media (max-width: 900px) {
+  .incident-pinned-section {
+    height: auto;
+    min-height: 100svh;
+  }
+
+  .incident-pinned-wrapper {
+    height: auto;
+    min-height: 100svh;
+    max-height: none;
+    overflow: visible;
+  }
+
+  .pinned-layer {
+    position: relative;
+    height: auto;
+    min-height: 100svh;
+    padding: 2.5rem 1.5rem 5rem;
+  }
+
+  .layer-incident {
+    position: relative;
+    clip-path: none !important;
+    display: none; /* Managed by reduced motion / mobile stacked views */
+  }
+
   .incident-grid {
     grid-template-columns: 1fr;
+    height: auto;
+    gap: 2rem;
   }
   
   .incident-left-col {
     max-width: 100%;
+    gap: 1.25rem;
   }
 
   .incident-card {
     width: 100%;
-    font-size: 16px;
+    font-size: 15px;
+    padding: 1rem 1.25rem;
+  }
+
+  .card-row, .card-row-bottom {
+    flex-wrap: wrap;
+    gap: 0.5rem;
   }
 
   .incident-hud {
     grid-template-columns: 1fr;
     gap: 1rem;
     align-items: center;
+    margin-top: 2rem;
   }
 
   .step-chips-group {
     flex-wrap: wrap;
-    justify-content: center;
+    justify-content: flex-start;
+    gap: 0.4rem;
   }
 
   .hud-progress-right {
-    justify-self: center;
-    text-align: center;
+    position: static;
+    right: auto;
+    bottom: auto;
+    align-items: flex-start;
+    text-align: left;
+    margin-top: 1.5rem;
+  }
+
+  .hud-stage-labels-stack {
+    justify-content: flex-start;
+  }
+
+  .hud-stage-label {
+    left: 0;
+    right: auto;
+  }
+}
+
+@media (max-width: 600px) {
+  .pinned-layer {
+    padding: 2rem 1rem 4rem;
+  }
+
+  .incident-heading {
+    font-size: 2.2rem;
+  }
+
+  .incident-desc {
+    font-size: 0.72rem;
+  }
+
+  .step-chip {
+    font-size: 0.62rem;
+    padding: 0.25rem 0.65rem;
   }
 }
 

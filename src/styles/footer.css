@@ -37,7 +37,7 @@
 
 .footer-giant-title {
   font-family: var(--font-display);
-  line-height: 0.85;
+  line-height: 0.98;
   letter-spacing: -0.02em;
   text-transform: uppercase;
   margin: 0;
@@ -45,6 +45,7 @@
   display: flex;
   justify-content: space-between;
   width: 100%;
+  padding: 0.05em 0;
 }
 
 .footer-letter {
@@ -54,6 +55,7 @@
   -webkit-text-stroke: 1.5px var(--ink);
   transition: color 0.2s ease;
   will-change: color;
+  padding: 0 0.02em;
 }
 
 .footer-letter.is-filled {

@@ -137,11 +137,12 @@
 }
 
 .incident-status-tag {
-  font-size: clamp(2.2rem, 4.8vw, 4.4rem);
-  line-height: 0.95;
+  font-size: clamp(2rem, 4.8vw, 4.4rem);
+  line-height: 1.05;
   letter-spacing: -0.02em;
   text-transform: uppercase;
   margin-bottom: 0.85rem;
+  padding: 0.05em 0;
 }
 
 /* 6. READABILITY: Ink text with lime highlight chip on NOMINAL */
